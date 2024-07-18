@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Bubble from '../components/Bubble.js';
 import '../components/Bubble.css';
 import Modal from '../components/Modal';
@@ -7,7 +7,13 @@ const Chat = () => {
   const [showModal, setShowModal] = useState(true);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userInfo, setUserInfo] = useState({ name: '', contact: '' });
+  const [userInfo, setUserInfo] = useState({ name: '', contact: '', profileImg: '/user-profile-img.png' });
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleInputChange = (e) => {
     setNewMessage(e.target.value);
@@ -15,46 +21,41 @@ const Chat = () => {
 
   const handleSendMessage = () => {
     if (newMessage.trim() === '') return;
-  
-    // 새로운 메시지를 생성하여 상태를 업데이트
-    const userMessage = { text: newMessage, isUser: true };
+
+    const userMessage = { text: newMessage, isUser: true, profileImg: userInfo.profileImg };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setNewMessage('');
 
-
-    // 챗봇 응답을 지연시키기 위해 setTimeout 사용
     setTimeout(() => {
-      const botResponse = '안녕하세요! 저는 챗봇입니다.';
-      const botMessage = { text: botResponse, isUser: false };
+      const botResponse = '정보 확인 중입니다. 잠시만 기다려주세요.';
+      const botMessage = { text: botResponse, isUser: false, profileImg: '/bot-profile-img.png' };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
-
-      // 맨 아래로 스크롤
-      scrollToBottom();
-    }, 500); // 챗봇 응답 딜레이 설정 예시
+    }, 500);
   };
 
-  // 모달을 닫는 함수
   const closeModal = () => {
     setShowModal(false);
   };
 
   const handleModalSubmit = (name, contact) => {
-    setUserInfo({ name, contact });
+    setUserInfo({ name, contact, profileImg: '/user-profile-img.png' });
+
+    // 모달에서 정보 입력이 완료되면 바로 챗봇의 초기 메시지를 추가합니다.
+    const initialBotMessage = '7월 21일 13:53에 실종된 ㅇㅇㅇ에 대한 제보 서비스입니다. 무엇을 확인하시겠습니까?';
+    const initialBotMessageObj = { text: initialBotMessage, isUser: false, profileImg: '/bot-profile-img.png' };
+    setMessages([initialBotMessageObj]);
   };
 
-  // 채팅을 재시작하는 함수
   const restartChat = () => {
     setMessages([]);
     setNewMessage('');
     setShowModal(true);
   };
 
-  // 맨 아래로 스크롤하는 함수
   const scrollToBottom = () => {
-    const chatContainer = document.getElementsByClassName('chat-messages')[0];
-    if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -63,14 +64,29 @@ const Chat = () => {
       {showModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
       <section className="chat-messages">
         {messages.map((message, index) => (
-          <Bubble key={index} text={message.text} isUser={message.isUser} />
+          <div key={index} className={`message-container ${message.isUser ? 'user' : 'bot'}`}>
+            <div className={`bubble-container ${message.isUser ? 'user-message' : 'bot-message'}`}>
+              {!message.isUser && (
+                <div className="profile">
+                  <img src={message.profileImg} alt="Profile" className="profile-img" />
+                </div>
+              )}
+              <Bubble text={message.text} isUser={message.isUser} />
+              {message.isUser && (
+                <div className="profile">
+                  <img src={message.profileImg} alt="Profile" className="profile-img" />
+                </div>
+              )}
+            </div>
+          </div>
         ))}
+        <div ref={messagesEndRef}></div>
       </section>
       <div className="chat-input-container">
         <input
           type="text"
           className="chat-input"
-          placeholder="메시지를 입력하세요..."
+          placeholder="메시지를 입력하세요."
           value={newMessage}
           onChange={handleInputChange}
           onKeyPress={(e) => {
