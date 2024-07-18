@@ -1,9 +1,13 @@
 import './App.css';
-import Home from './pages/Home.js';
+import Header from './components/Header.js';
+import Chat from './pages/Chat.js';
 
 function App() {
   return (
-    <Home></Home>
+    <section style={{display:'flex',flexDirection: 'column',width: '100%', height:'100%'}}>
+      <Header title='Header' />
+      <Chat />
+    </section>
   );
 }
 
