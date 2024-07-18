@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 15px;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+
+.chat-bubble.bot {
+  background-color: #f1f1f1;
+  align-self: flex-start;
+}
+
+.chat-bubble.user {
+  background-color: #4caf50;
+  color: white;
+  align-self: flex-end;
+}
