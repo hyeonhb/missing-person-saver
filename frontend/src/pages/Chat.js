@@ -7,7 +7,7 @@ const Chat = () => {
   const [showModal, setShowModal] = useState(true);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userInfo, setUserInfo] = useState({ name: '', contact: '', profileImg: '/user-profile-img.png' });
+  const [userInfo, setUserInfo] = useState({ name: '', contact: '' });
 
   const messagesEndRef = useRef(null);
 
@@ -22,14 +22,14 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (newMessage.trim() === '') return;
 
-    const userMessage = { text: newMessage, isUser: true, profileImg: userInfo.profileImg };
+    const userMessage = { text: newMessage, isUser: true };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setNewMessage('');
 
     setTimeout(() => {
       const botResponse = '정보 확인 중입니다. 잠시만 기다려주세요.';
-      const botMessage = { text: botResponse, isUser: false, profileImg: '/bot-profile-img.png' };
+      const botMessage = { text: botResponse, isUser: false, profileImg: '/chatbot_icon.png' };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     }, 500);
   };
@@ -39,11 +39,11 @@ const Chat = () => {
   };
 
   const handleModalSubmit = (name, contact) => {
-    setUserInfo({ name, contact, profileImg: '/user-profile-img.png' });
+    setUserInfo({ name, contact });
 
     // 모달에서 정보 입력이 완료되면 바로 챗봇의 초기 메시지를 추가합니다.
     const initialBotMessage = '7월 21일 13:53에 실종된 ㅇㅇㅇ에 대한 제보 서비스입니다. 무엇을 확인하시겠습니까?';
-    const initialBotMessageObj = { text: initialBotMessage, isUser: false, profileImg: '/bot-profile-img.png' };
+    const initialBotMessageObj = { text: initialBotMessage, isUser: false, profileImg: '/chatbot_icon.png' };
     setMessages([initialBotMessageObj]);
   };
 
@@ -72,11 +72,6 @@ const Chat = () => {
                 </div>
               )}
               <Bubble text={message.text} isUser={message.isUser} />
-              {message.isUser && (
-                <div className="profile">
-                  <img src={message.profileImg} alt="Profile" className="profile-img" />
-                </div>
-              )}
             </div>
           </div>
         ))}
