@@ -72,7 +72,7 @@ const handleAdditionalReport = (setMessages, setShowInput) => {
 };
 
 const Chat = () => {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [userInfo, setUserInfo] = useState({ name: '', contact: '' });
@@ -82,8 +82,20 @@ const Chat = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    openModal(window.localStorage);
+  } , []);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  function openModal(profile) {
+    // 기존 profile 정보가 있는지 체크
+    const hasProfile = Object.keys(profile).length !== 0;
+
+    if (hasProfile) restartChat(); // 이미 있으면 바로 채팅 시작
+    else setShowModal(true); // 없을 때만 표시
+  }
 
   const handleInputChange = (e) => {
     setNewMessage(e.target.value);
