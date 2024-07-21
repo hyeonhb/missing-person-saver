@@ -14,27 +14,32 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-
+@IdClass(ChatRoomId.class)
 @Table(name = "CHAT_ROOM")
-@IdClass(ChatRoomId.class) // 복합키 설정
 public class ChatRoom {
     @Id
-    @Column(name = "ROOM_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROOM_ID")
     private Long roomId;
 
     @Id
     @Column(name = "USER_ID")
     private Long userId;
 
+    @Id
+    @Column(name = "MP_ID")
+    private Long mpId;
+
     @MapsId
     @ManyToOne
     @JoinColumn(name = "USER_ID", insertable = false, updatable = false)
     private Users user;  // Users N:1 관계
 
-    @Id
-    @Column(name = "MP_ID")
-    private Long mpId; // 실종자 id
+    @MapsId
+    @ManyToOne
+    @JoinColumn(name = "MP_ID", insertable = false, updatable = false)
+    private MissingPerson missingPerson;  // Users N:1 관계
+
 
     @CreationTimestamp // 날짜는 자동으로 추가
     @Column(updatable = false, name = "INS_DT")

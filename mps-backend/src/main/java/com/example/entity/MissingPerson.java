@@ -30,11 +30,11 @@ public class MissingPerson {
     @Column(name = "SEXDSTN_DSCD", nullable = false)
     private Integer sexdstnDscd;
 
-    @Column(name = "REALISE_DATE", nullable = false, length = 8)
-    private String realiseDate;
+    @Column(name = "RLS_DATE", nullable = false, length = 8)
+    private String rlsDate;
 
-    @Column(name = "REALISE_PLACE", length = 30)
-    private String realisePlace;
+    @Column(name = "RLS_PLACE", length = 30)
+    private String rlsPlace;
 
     @Column(name = "HEIGHT")
     private Integer height;
