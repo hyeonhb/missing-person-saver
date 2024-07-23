@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 
 @Table(name = "CHAT_MESSAGE")
 public class ChatMessage {
-    @Id
-    @Column(name = "MSG_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long msgId;
 
+    @EmbeddedId
+    private ChatMessageId id;
+
+    @MapsId("chatRoomId")
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID"),
             @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"),
-            @JoinColumn(name = "MP_ID", referencedColumnName = "MP_ID")
+            @JoinColumn(name = "MP_ID", referencedColumnName = "MP_ID"),
+            @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID")
     })
     private ChatRoom chatRoom; // ChatRoom N:1 관계
 

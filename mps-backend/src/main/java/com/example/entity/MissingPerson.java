@@ -19,7 +19,7 @@ public class MissingPerson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MP_ID")
-    private Integer mpId;
+    private Long mpId;
 
     @Column(name = "NAME", nullable = false, length = 10)
     private String name;
@@ -56,4 +56,7 @@ public class MissingPerson {
 
     @Column(name = "DRESSING_DSCD", length = 10)
     private String dressingDscd;
+
+    @OneToMany(mappedBy = "missingPerson")
+    private List<ChatRoom> roomList = new ArrayList<>(); // ChatRoom 1:N 관계
 }
