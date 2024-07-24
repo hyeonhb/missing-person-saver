@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, ChatRoomId> {
@@ -15,4 +16,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, ChatRoomId> 
 //    Optional<ChatRoom> findByUserIdAndMpId(@Param("userId") Long userId, @Param("mpId") Long mpId);
 
     Optional<ChatRoom> findByUsersAndMissingPerson(Users users, MissingPerson missingPerson);
+
+    Optional<ChatRoom> findByChatRoomIdUserIdAndChatRoomIdMpId(Long userId, Long mpId);
 }

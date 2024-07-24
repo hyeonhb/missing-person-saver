@@ -42,7 +42,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     @Transactional
     public UUID getChatRoom(Users users, MissingPerson missingPerson) {
+        // entity가 아닌 Long으로 조회하는 경우
+//        Optional<ChatRoom> chatRoomOptional1 = chatRoomRepository.findByChatRoomIdUserIdAndChatRoomIdMpId(users.getUserId(), missingPerson.getMpId());
+        // entity로 조회하는 경우
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findByUsersAndMissingPerson(users, missingPerson);
+
+//        System.out.println(chatRoomOptional1.toString());
+        System.out.println(chatRoomOptional.toString());
         if(chatRoomOptional.isEmpty()) {
             // UUID를 사용하여 roomId를 생성합니다.
             UUID roomId = UUID.randomUUID();
@@ -56,10 +62,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
             entityManager.persist(newChatRoom);
 
-            System.out.println(newChatRoom.getChatRoomId());
-            return newChatRoom.getChatRoomId().getRoomId();
+            return roomId;
         } else {
-            Task task = entityManager.find(Task.class, taskId);
             return chatRoomOptional.get().getChatRoomId().getRoomId();
         }
     }

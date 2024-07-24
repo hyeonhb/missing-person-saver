@@ -17,6 +17,8 @@ public class ChatRoomId implements Serializable {
     private Long userId;
     private Long mpId;
 
+    public ChatRoomId() {}
+
     public UUID getRoomId() {
         return roomId;
     }

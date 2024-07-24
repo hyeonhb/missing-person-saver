@@ -10,5 +10,11 @@ import java.util.UUID;
 public interface ChatRoomService {
     List<UserDTO> getAllChatRoom();
 
+    /**
+     * 채팅방 조회
+     * @param users
+     * @param missingPerson
+     * @return 채팅방 UUID
+     */
     UUID getChatRoom(Users users, MissingPerson missingPerson);
 }
