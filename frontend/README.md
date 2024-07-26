@@ -68,3 +68,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+// 챗봇 아이콘 출처 표시 필요
+<a href="https://www.flaticon.com/kr/free-icons/" title="챗봇 아이콘">챗봇 아이콘 제작자: Flowicon - Flaticon</a>

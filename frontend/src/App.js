@@ -4,10 +4,10 @@ import Chat from './pages/Chat.js';
 
 function App() {
   return (
-    <section style={{display:'flex',flexDirection: 'column',width: '100%', height:'100%'}}>
-      <Header title='Header' />
+    <section className='container'>
+      <Header title='MPS(Missing Person Saver)' />
       <Chat />
-    </section>
+    </section>   
   );
 }
 
