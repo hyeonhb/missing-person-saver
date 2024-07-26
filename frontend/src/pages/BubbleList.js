@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Bubble.css';
 
-const BubbleList = ({ messages, onOptionSelect }) => {
+const BubbleList = ({ messages }) => {
   return (
     <div className="bubble-list">
       {messages.map((message, index) => (
@@ -16,19 +16,6 @@ const BubbleList = ({ messages, onOptionSelect }) => {
           </div>
         </div>
       ))}
-      {messages.length > 0 && !messages[messages.length - 1].isUser && messages[messages.length - 1].options && (
-        <div className="options-container">
-          {messages[messages.length - 1].options.map((option, index) => (
-            <button
-              key={index}
-              className="option-button"
-              onClick={() => onOptionSelect(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
