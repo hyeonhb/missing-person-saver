@@ -5,8 +5,11 @@ const misperApi = {
     getTestResponse: async () => {
         return await apiController.get('https://jsonplaceholder.typicode.com/posts')
     },
+    /**
+     * @param {object} request - uid: String (from URL)
+     * @returns {object} name: String, place: String, age: Number, clothes: String, face: String, sex: Number,  image_urls: Array[String]
+     */
     getMisperInfo: async param => {
-        // param = {uid: String (from URL)}
         return {
             name: '홍길동',
             place: '서울시 강남구 삼성동',
