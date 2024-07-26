@@ -1,5 +1,5 @@
 import React from 'react';
-import '../components/Bubble.css';
+import '../styles/Bubble.css';
 
 const BubbleList = ({ messages, onOptionSelect }) => {
   return (

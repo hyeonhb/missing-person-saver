@@ -1,5 +1,5 @@
 import React from 'react';
-import './Bubble.css';
+import '../styles/Bubble.css';
 
 const Bubble = ({ text, isUser }) => {
   return (

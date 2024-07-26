@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Modal.css';
+import '../styles/Modal.css';
 
 const Modal = ({ onClose, onSubmit }) => {
   const [name, setName] = useState('');

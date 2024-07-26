@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import BubbleList from './BubbleList'; 
-import '../components/Bubble.css';
+import '../styles/Bubble.css';
 import Modal from '../components/Modal';
 
 // 옵션 처리 로직 분리
