@@ -7,7 +7,6 @@ const Chat = () => {
   const [showModal, setShowModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userInfo, setUserInfo] = useState({ name: '', contact: '' });
 
   const messagesEndRef = useRef(null);
 
@@ -39,7 +38,7 @@ const Chat = () => {
   const updateNewMsg = () => {
     const updatedMsg = {
       text: newMessage,
-      isUser: true,
+      isUser: false,
     };
 
     setNewMessage('');
@@ -51,7 +50,7 @@ const Chat = () => {
   };
 
   const handleModalSubmit = (name, contact) => {
-    setUserInfo({ name, contact });
+    //
   };
 
   const scrollToBottom = () => {

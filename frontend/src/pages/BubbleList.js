@@ -1,4 +1,5 @@
 import React from 'react';
+import Bubble from '../components/Bubble';
 import '../styles/Bubble.css';
 
 const BubbleList = ({ messages }) => {
@@ -12,7 +13,7 @@ const BubbleList = ({ messages }) => {
                 <img src={message.profileImg} alt="Profile" className="profile-img" />
               </div>
             )}
-            <div className="bubble">{message.text}</div>
+            <Bubble text={message.text} />
           </div>
         </div>
       ))}
