@@ -68,4 +68,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
     }
 
+    @Override
+    public ChatRoom getChatRoomEntity(UUID roomId) {
+        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findByChatRoomIdRoomId(roomId);
+
+        return chatRoomOptional.get();
+    }
+
 }

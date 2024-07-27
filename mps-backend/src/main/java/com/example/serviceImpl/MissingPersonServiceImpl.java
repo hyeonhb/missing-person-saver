@@ -1,6 +1,6 @@
 package com.example.serviceImpl;
 
-import com.example.config.OpenApiConfig;
+//import com.example.config.OpenApiConfig;
 import com.example.entity.MissingPerson;
 import com.example.entity.Users;
 import com.example.repository.MissingPersonRepository;
@@ -18,9 +18,6 @@ public class MissingPersonServiceImpl implements MissingPersonService {
 
     @Autowired
     private RestTemplate restTemplate;
-
-    @Autowired
-    private OpenApiConfig openApiConfig;
 
     @Autowired
     private MissingPersonRepository missingPersonRepository;

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDTO convertEntityToDTO(Users users) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(users.getId());
+        userDTO.setId(users.getUserId());
         userDTO.setTelno(users.getTelno());
         userDTO.setName(users.getName());
         return userDTO;

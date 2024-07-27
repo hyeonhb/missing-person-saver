@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, ChatRoomId> {
 //    @Query("SELECT e FROM ChatRoom e WHERE e.userId = :userId AND e.mpId = :mpId")
@@ -18,4 +19,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, ChatRoomId> 
     Optional<ChatRoom> findByUsersAndMissingPerson(Users users, MissingPerson missingPerson);
 
     Optional<ChatRoom> findByChatRoomIdUserIdAndChatRoomIdMpId(Long userId, Long mpId);
+
+    Optional<ChatRoom> findByChatRoomIdRoomId(UUID roomId);
 }

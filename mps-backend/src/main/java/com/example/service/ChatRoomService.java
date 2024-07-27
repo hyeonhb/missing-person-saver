@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.dto.UserDTO;
+import com.example.entity.ChatRoom;
 import com.example.entity.MissingPerson;
 import com.example.entity.Users;
 
@@ -17,4 +18,6 @@ public interface ChatRoomService {
      * @return 채팅방 UUID
      */
     UUID getChatRoom(Users users, MissingPerson missingPerson);
+
+    ChatRoom getChatRoomEntity(UUID roomId);
 }

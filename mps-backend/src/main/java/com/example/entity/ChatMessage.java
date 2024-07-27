@@ -1,10 +1,7 @@
 package com.example.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,9 +9,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-
 @Table(name = "CHAT_MESSAGE")
 public class ChatMessage {
 
@@ -39,6 +33,23 @@ public class ChatMessage {
     @CreationTimestamp // 날짜는 자동으로 추가
     @Column(updatable = false, name = "INS_DT")
     private LocalDateTime insDt = null; // 날짜
+
+    public ChatMessage() {}
+
+    @Builder
+    public ChatMessage(
+            ChatMessageId id,
+            ChatRoom chatRoom,
+            String content,
+            Long type,
+            LocalDateTime insDt
+    ) {
+        this.id = id;
+        this.chatRoom = chatRoom;
+        this.content = content;
+        this.type = type;
+        this.insDt = insDt;
+    }
 
     @Override
     public String toString() {
