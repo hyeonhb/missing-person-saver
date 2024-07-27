@@ -1,7 +1,8 @@
 import React from 'react';
-import '../components/Bubble.css';
+import Bubble from '../components/Bubble';
+import '../styles/Bubble.css';
 
-const BubbleList = ({ messages, onOptionSelect }) => {
+const BubbleList = ({ messages }) => {
   return (
     <div className="bubble-list">
       {messages.map((message, index) => (
@@ -12,23 +13,10 @@ const BubbleList = ({ messages, onOptionSelect }) => {
                 <img src={message.profileImg} alt="Profile" className="profile-img" />
               </div>
             )}
-            <div className="bubble">{message.text}</div>
+            <Bubble text={message.text} />
           </div>
         </div>
       ))}
-      {messages.length > 0 && !messages[messages.length - 1].isUser && messages[messages.length - 1].options && (
-        <div className="options-container">
-          {messages[messages.length - 1].options.map((option, index) => (
-            <button
-              key={index}
-              className="option-button"
-              onClick={() => onOptionSelect(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
