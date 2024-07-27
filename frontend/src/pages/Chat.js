@@ -38,7 +38,7 @@ const Chat = () => {
   const updateNewMsg = () => {
     const updatedMsg = {
       text: newMessage,
-      isUser: false,
+      isUser: true,
     };
 
     setNewMessage('');
