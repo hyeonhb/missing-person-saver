@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import com.example.entity.ChatRoom;
+import com.example.entity.MissingPerson;
+import com.example.service.ChatRoomService;
 import com.example.service.MissingPersonService;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/missing-persons")
 public class MissingPersonController {
+
+    @Autowired
+    private ChatRoomService chatRoomService;
 
     @Autowired
     private MissingPersonService missingPersonService;
@@ -18,6 +25,13 @@ public class MissingPersonController {
     @GetMapping("/persons")
     public String getTest(@RequestParam("test") String test) {
         return test;
+    }
+
+    @GetMapping("/find-info")
+    public MissingPerson getMissingPersonInfo(@RequestParam UUID roomId) {
+        ChatRoom chatRoom = chatRoomService.getChatRoomEntity(roomId);
+        Long mpId = chatRoom.getChatRoomId().getMpId();
+        return missingPersonService.getMissingPerson(mpId);
     }
 
     @PostMapping("/list")
