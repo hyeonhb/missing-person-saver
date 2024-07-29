@@ -9,6 +9,7 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
 
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     openModal(window.localStorage);
@@ -43,6 +44,8 @@ const Chat = () => {
 
     setNewMessage('');
     setMessages([...messages, updatedMsg]);
+
+    focusInput();
   }
 
   const closeModal = () => {
@@ -59,6 +62,10 @@ const Chat = () => {
     }
   };
 
+  const focusInput = () => {
+    if (inputRef.current) inputRef.current.focus();
+  }
+
   return (
     <div className="chat-container">
       {showModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
@@ -68,6 +75,7 @@ const Chat = () => {
       </section>
       <div className="chat-input-container">
           <input
+            ref={inputRef}
             type="text"
             className="chat-input"
             placeholder="메시지를 입력하세요."
