@@ -1,13 +1,15 @@
 
 .message-container {
   display: flex;
+  flex-direction: column;
   justify-content: flex-end; /* 메시지 컨테이너를 오른쪽으로 정렬 */
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .bubble {
   position: relative;
-  max-width: 80%;
+  max-width: 70%;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -15,11 +17,11 @@
 }
 
 .user {
-  align-self: flex-end;
   justify-content: flex-end;
 }
 
 .user .bubble {
+  align-self: flex-end;
   background-color: #002853; /* 사용자 메시지 색상 */
   color: #fff;
 }
@@ -29,7 +31,6 @@
 }
 
 .bot {
-  align-self: flex-start;
   justify-content: flex-start;
 }
 
@@ -65,7 +66,7 @@
 
 .chat-messages {
   flex: 1; /* 채팅 메시지 영역이 창의 남은 공간을 채우도록 설정 */
-  overflow-y: auto; /* 채팅이 넘칠 경우 스크롤바를 표시 */
+  width: 100%;
 }
 
 .chat-input-container {

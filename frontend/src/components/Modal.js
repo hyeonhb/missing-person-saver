@@ -32,9 +32,7 @@ const Modal = ({ onClose, onSubmit }) => {
 
   const handleSubmit = () => {
     if (name.trim() && contact.trim()) {
-      onSubmit(name, contact);
-      window.localStorage.setItem('name', name);
-      window.localStorage.setItem('contact', contact);
+      onSubmit({name, contact});
       onClose();
     } else {
       alert("이름과 연락처를 모두 입력해주세요.");

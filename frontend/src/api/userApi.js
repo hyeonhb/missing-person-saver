@@ -9,10 +9,12 @@ const userApi = {
      * @returns {object} roomId: String, userId: Number
      */
     saveUserProfile: async param => {
-        return {
-            roomId: 1111,
-            userId: 9999,
-        };
+        return new Promise(res => {
+            res({
+                roomId: 1111,
+                userId: 9999,
+            });
+        });
     },
 }
 
