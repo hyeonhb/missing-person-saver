@@ -11,6 +11,9 @@
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -20,16 +23,20 @@
 }
 
 .modal-content h2 {
+  align-self: flex-start;
   margin-bottom: 20px;
 }
 
 .modal-content div {
+  text-align: start;
+  width: 100%;
   margin-bottom: 10px;
 }
 
 .modal-content label {
   display: block;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .modal-content input {
@@ -41,6 +48,7 @@
 }
 
 .modal-content button {
+  align-self: flex-end;
   padding: 10px 20px;
   background-color: #002853;
   color: white;

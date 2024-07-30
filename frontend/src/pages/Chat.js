@@ -1,166 +1,131 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+// Components
 import BubbleList from './BubbleList'; 
-import '../components/Bubble.css';
 import Modal from '../components/Modal';
-import Reportoptions from '../components/Reportoptions'; // Import the ReportOptions component
-
-// 옵션 처리 로직 분리
-const handleOption1 = (setMessages, setWaitingForOption) => {
-  const userMessage = { text: '옵션1이 선택되었습니다.', isUser: true };
-  setMessages(prevMessages => [...prevMessages, userMessage]);
-
-  setTimeout(() => {
-    const botResponse = '옵션1에 대한 하위 옵션을 선택하세요.';
-    const botMessage = {
-      text: botResponse,
-      isUser: false,
-      profileImg: '/chatbot_icon.png',
-      options: ['옵션1-1', '즉시제보']
-    };
-    setMessages(prevMessages => [...prevMessages, botMessage]);
-    setWaitingForOption(true);
-  }, 500);
-};
-
-const handleOption1_1 = (setMessages, setWaitingForOption) => {
-  const userMessage = { text: '옵션1-1이 선택되었습니다.', isUser: true };
-  setMessages(prevMessages => [...prevMessages, userMessage]);
-
-  setTimeout(() => {
-    const botResponse = '옵션1-1에 대한 하위 옵션을 선택하세요.';
-    const botMessage = {
-      text: botResponse,
-      isUser: false,
-      profileImg: '/chatbot_icon.png',
-      options: ['옵션1-1-1', '즉시제보']
-    };
-    setMessages(prevMessages => [...prevMessages, botMessage]);
-    setWaitingForOption(true);
-  }, 500);
-};
-
-// '즉시제보' 클릭 시 처리 로직
-const handleImmediateReport = (newMessage, setMessages, setShowInput) => {
-  const userMessage = { text: newMessage, isUser: true };
-  setMessages(prevMessages => [...prevMessages, userMessage]);
-
-  setTimeout(() => {
-    const botResponse = '제보내용이 정상적으로 접수되었습니다. 정보제공에 감사드리며 앞으로도 많은 협조바랍니다.';
-    const botMessage = {
-      text: botResponse,
-      isUser: false,
-      profileImg: '/chatbot_icon.png',
-      options: ['채팅종료', '추가제보']
-    };
-    setMessages(prevMessages => [...prevMessages, botMessage]);
-  }, 500);
-};
-
-// '추가제보' 클릭 시 처리 로직
-const handleAdditionalReport = (setMessages, setShowInput) => {
-  setShowInput(true); // 메시지 입력창 활성화
-
-  setTimeout(() => {
-    const botResponse = '추가 제보를 입력하세요.';
-    const botMessage = {
-      text: botResponse,
-      isUser: false,
-      profileImg: '/chatbot_icon.png'
-    };
-    setMessages(prevMessages => [...prevMessages, botMessage]);
-  }, 500);
-};
+import ReportOptions from '../components/ReportOptions'
+// Utils
+import storage from '../utils/storage';
+import { isEmptyObject } from '../utils/validator';
+import { formatResponseMsg } from '../utils/converter';
+// Styles
+import '../styles/Bubble.css';
+// API
+import userApi from '../api/userApi';
+import misperApi from '../api/misperApi';
+import messageApi from '../api/messageApi';
 
 const Chat = () => {
   const [showModal, setShowModal] = useState(true);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userInfo, setUserInfo] = useState({ name: '', contact: '' });
-  const [waitingForOption, setWaitingForOption] = useState(false);
-  const [showInput, setShowInput] = useState(true); // 상시 메시지 입력창 활성화
+  const [misperInfo, setMisperInfo] = useState({});
+  const [answer, setAnswer] = useState({});
   const [showOptionsModal, setShowOptionsModal] = useState(false);
 
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const userId = storage.get.userId();
+    if (!userId) openModal(); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
+    else initRoom(); // 있으면 바로 채팅 시작
+  } , []);
+
+  // 실종자 정보 셋업
+  useEffect(() => {
+    const hasMisperInfo = !isEmptyObject(misperInfo);
+    if (hasMisperInfo) {
+      let text = '아래 실종자의 제보 및 QnA 창입니다.\n\n';
+      for (const key in misperInfo) {
+        if (key === 'image_urls') continue;
+        text += `${key}: ${misperInfo[key]}\n`;
+      }
+
+      
+      setMessages([{text, isUser: false}, ...messages]);
+    }
+  }, [misperInfo]);
+
+  // 신규 답변 셋업
+  useEffect(() => {
+    const hasAnswer = !isEmptyObject(answer);
+    if (hasAnswer) {
+      setMessages([...messages, answer]);
+
+      // 답변 초기화
+      setAnswer({});
+    }
+  }, [answer]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  function openModal() {
+    setShowModal(true);
+  }
+
+  const initRoom = async () => {
+    // 실종자 정보 셋업
+    const key = storage.get.misperKey();
+    const info = await misperApi.getMisperInfo({uid: key});
+    setMisperInfo(info);
+
+    // roomId가 있으면 기존 채팅 내역을 불러와서 셋업해주자.
+    const roomId = storage.get.roomId();
+    if (!roomId) return;
+
+    const response = await messageApi.getMessageHistory({roomId});
+    const histories = response.messages.map(msg => formatResponseMsg(msg));
+
+    setMessages([...histories]);
+  };
+
   const handleInputChange = (e) => {
     setNewMessage(e.target.value);
   };
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() === '') return;
+  const updateNewMsg = () => {
+    // user가 보낸 메시지를 BubbleList에 새로운 Bubble로 생성 (user-bubble)
+    const updatedMsg = {
+      text: newMessage,
+      isUser: true,
+    };
+    setMessages([...messages, updatedMsg]);
+    setNewMessage(''); // 입력창 값 초기화
 
-    const userMessage = { text: newMessage, isUser: true };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
-    setNewMessage('');
+    // 신규 질문에 대한 답변 가져와서 이것도 새로운 Bubble로 생성 (bot-bubble)
+    const param = {
+      question: updatedMsg.text,
+      roomId: storage.get.roomId(),
+    };
+    messageApi.getAnswer(param).then(response => {
+      const formattedAnswer = formatResponseMsg(response);
+      setAnswer(formattedAnswer);
+    });
 
-    setTimeout(() => {
-      const botResponse = '정보 확인 중입니다. 잠시만 기다려주세요.';
-      const botMessage = { text: botResponse, isUser: false, profileImg: '/chatbot_icon.png' };
-      setMessages(prevMessages => [...prevMessages, botMessage]);
-    }, 500);
-  };
+    // 버튼을 직접 눌렀을 때를 대비한 auto focusing
+    focusInput();
+  }
+
+  function updateAnswer() {
+    
+  }
 
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const handleModalSubmit = (name, contact) => {
-    setUserInfo({ name, contact });
+  const handleModalSubmit = async informerInfo => {
+    // Modal 컴포넌트에서 넘어온 제보자 정보를 API에 넘겨서 새로 생성된 userId와 roomId를 얻어오자
+    const {userId, roomId} = await userApi.saveUserProfile(informerInfo);
 
-    const initialBotMessage = {
-      text: '7월 21일 13:53에 실종된 ㅇㅇㅇ에 대한 제보 서비스입니다. 무엇을 확인하시겠습니까?',
-      isUser: false,
-      profileImg: '/chatbot_icon.png',
-      options: ['옵션1', '옵션2', '즉시제보']
-    };
-    setMessages([initialBotMessage]);
-    setWaitingForOption(true);
-  };
+    // 위 API 얻어돈 ID 값들을 storage에 저장
+    storage.set.userId(userId);
+    storage.set.roomId(roomId);
 
-  const handleOptionSelect = (option) => {
-    if (option === '즉시제보') {
-      setWaitingForOption(false);
-      setShowInput(true); // '즉시제보' 선택 시 메시지 입력창 활성화
-      return;
-    }
-    if (option === '추가제보') {
-      handleAdditionalReport(setMessages, setShowInput);
-      return;
-    }
-    
-    setWaitingForOption(false);
-    setShowInput(false); // 하위 옵션 선택 시 입력창 비활성화
-    const userMessage = { text: `사용자 선택: ${option}`, isUser: true };
-    setMessages(prevMessages => [...prevMessages, userMessage]);
-
-    if (option === '옵션1') {
-      handleOption1(setMessages, setWaitingForOption);
-    } else if (option === '옵션1-1') {
-      handleOption1_1(setMessages, setWaitingForOption);
-    } else if (option === '옵션2') {
-      // Handle option 2 similarly
-    } else {
-      setTimeout(() => {
-        const botResponse = `선택된 옵션은 '${option}'입니다. 추가로 도움이 필요하시면 말씀해 주세요.`;
-        const botMessage = { text: botResponse, isUser: false, profileImg: '/chatbot_icon.png' };
-        setMessages(prevMessages => [...prevMessages, botMessage]);
-      }, 500);
-    }
-  };
-
-  const handleImmediateReportSubmit = () => {
-    handleImmediateReport(newMessage, setMessages, setShowInput);
-    setNewMessage(''); // 메시지 입력 후 입력창 비우기
-  };
-
-  const handleAdditionalReportSubmit = () => {
-    handleImmediateReport(newMessage, setMessages, setShowInput);
-    setNewMessage(''); // 메시지 입력 후 입력창 비우기
+    // 채팅 시작
+    initRoom();
   };
 
   const scrollToBottom = () => {
@@ -169,41 +134,35 @@ const Chat = () => {
     }
   };
 
+  const focusInput = () => {
+    if (inputRef.current) inputRef.current.focus();
+  }
+
   return (
     <div className="chat-container">
       {showModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
       <section className="chat-messages">
-        <BubbleList messages={messages} onOptionSelect={handleOptionSelect} />
-        <div ref={messagesEndRef}></div>
+        <BubbleList messages={messages} />
+        <div ref={messagesEndRef} />
       </section>
       <div className="chat-input-container">
-        <button className="report-button" onClick={() => setShowOptionsModal(true)}>
-          제보
-        </button>
-        {showInput && (
-          <>
-            <input
-              type="text"
-              className="chat-input"
-              placeholder="메시지를 입력하세요."
-              value={newMessage}
-              onChange={handleInputChange}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') handleImmediateReportSubmit();
-              }}
-            />
-            <button className="send-button" onClick={handleImmediateReportSubmit}>
-              전송
-            </button>
-          </>
-        )}
-      </div>
-      {showOptionsModal && (
-        <Reportoptions 
-          onClose={() => setShowOptionsModal(false)} 
-          onOptionSelect={handleOptionSelect}
+        <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
+        <input
+          ref={inputRef}
+          type="text"
+          className="chat-input"
+          placeholder="메시지를 입력하세요."
+          value={newMessage}
+          onChange={handleInputChange}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') updateNewMsg();
+          }}
         />
-      )}
+        <button className="send-button" onClick={updateNewMsg}>
+          전송
+        </button>
+      </div>
+      {showOptionsModal && <ReportOptions onClose={() => setShowOptionsModal(false)} />}
     </div>
   );
 };

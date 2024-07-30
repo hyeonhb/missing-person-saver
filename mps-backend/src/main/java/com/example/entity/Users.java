@@ -3,6 +3,9 @@ package com.example.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -13,13 +16,16 @@ import lombok.*;
 @Table(name = "USERS")
 public class Users {
     @Id
-    @Column(name = "ID")
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
-    @Column(name = "TELNO", length = 200)
-    private String telno;
+    @Column(name = "TELNO", nullable = false, length = 15)
+    private String telno;  // 전화번호
 
-    @Column(name = "NAME", length = 200)
-    private String name;
+    @Column(name = "NAME", nullable = false, length = 10)
+    private String name;  // 이름
+
+    @OneToMany(mappedBy = "users")
+    private List<ChatRoom> roomList = new ArrayList<>(); // ChatRoom 1:N 관계
 }

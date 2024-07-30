@@ -1,3 +1,0 @@
-2024-07-16 23:36:27.492452+09:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MEMBER" not found; SQL statement:
-insert into member(NAME, TELNO) values('지희', '010-1111-5555') [42102-224]
