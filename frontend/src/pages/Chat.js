@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 // Components
-import BubbleList from './BubbleList'; 
+import BubbleList from '../components/BubbleList'; 
 import Modal from '../components/Modal';
 import ReportOptions from '../components/ReportOptions'
 // Utils
