@@ -104,10 +104,6 @@ const Chat = () => {
     focusInput();
   }
 
-  function updateAnswer() {
-    
-  }
-
   const closeModal = () => {
     setShowProfileModal(false);
   };
