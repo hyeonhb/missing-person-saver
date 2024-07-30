@@ -139,7 +139,7 @@ const Chat = () => {
           ref={inputRef}
           type="text"
           className="chat-input"
-          placeholder="메시지를 입력하세요."
+          placeholder="질문을 입력해 주세요."
           value={newMessage}
           onChange={handleInputChange}
           onKeyPress={(e) => {

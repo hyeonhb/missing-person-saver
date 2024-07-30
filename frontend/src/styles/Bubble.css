@@ -60,33 +60,39 @@
 .chat-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100vh; /* 채팅 창 전체 높이를 화면 높이로 설정 */
   background-color: #ffffff; /* 채팅 창 배경색 */
-  padding: 20px;
+  /* padding: 20px; */
+  overflow: hidden;
 }
 
 .chat-messages {
+  width: auto;
   flex: 1; /* 채팅 메시지 영역이 창의 남은 공간을 채우도록 설정 */
-  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
 }
 
 .chat-input-container {
   display: flex;
+  flex-grow: 0;
   align-items: center;
-  margin-top: 20px; /* 입력창 위 여백 */
+  gap: 10px;
+  padding: 10px;
 }
 
 .chat-input {
+  width: 100%;
+  height: 100%;
   flex: 1; /* 입력창이 가능한 한 많은 공간을 차지하도록 설정 */
-  padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 10px; /* 입력창과 전송 버튼 사이 여백 */
 }
 
 .send-button {
-  padding: 10px 20px;
   font-size: 16px;
   background-color: #002853; /* 전송 버튼 배경색 */
   color: #fff;
@@ -107,7 +113,6 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px; /* 재시작 버튼 위 여백 */
 }
 
 button:hover {
