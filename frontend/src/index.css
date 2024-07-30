@@ -35,6 +35,11 @@ button {
   cursor: pointer;
 }
 
+input {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 input::placeholder {
   color:lightgray
 }
