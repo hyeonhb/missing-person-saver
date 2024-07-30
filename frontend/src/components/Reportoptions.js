@@ -3,10 +3,10 @@
 
 import React, { useState } from 'react';
 import './Reportoptions.css';
-import ReportMessage from './ReportMessage';
-import ReportCall from './ReportCall';
-import ReportGPS from './ReportGPS';
-import ReportImage from './ReportImage';
+import ReportMessage from './reports/ReportMessage';
+import ReportCall from './reports/ReportCall';
+import ReportGPS from './reports/ReportGPS';
+import ReportImage from './reports/ReportImage';
 
 const Reportoptions = ({ onClose }) => {
   const [selectedOption, setSelectedOption] = useState(null);
