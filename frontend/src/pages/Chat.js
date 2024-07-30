@@ -29,6 +29,22 @@ const Chat = () => {
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
 
+  // 실종자 정보 셋업
+  useEffect(() => {
+    const hasMisperInfo = !isEmptyObject(misperInfo);
+    if (hasMisperInfo) {
+      let text = '아래 실종자의 제보 및 QnA 창입니다.\n\n';
+      for (const key in misperInfo) {
+        if (key === 'image_urls') continue;
+        text += `${key}: ${misperInfo[key]}\n`;
+      }
+
+      
+      setMessages([{text, isUser: false}, ...messages]);
+    }
+  }, [misperInfo]);
+
+  // 신규 답변 셋업
   useEffect(() => {
     const hasAnswer = !isEmptyObject(answer);
     if (hasAnswer) {
