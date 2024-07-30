@@ -13,14 +13,6 @@
   justify-content: center;
 }
 
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  max-width: 600px;
-  margin: auto;
-}
-
 .chat-bubble {
   max-width: 80%;
   padding: 10px;
