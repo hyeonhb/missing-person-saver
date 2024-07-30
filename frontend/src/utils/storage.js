@@ -11,7 +11,7 @@ const storage = {
     roomId: () => window.localStorage.getItem(ITEM_MAP.ROOM_ID),
   },
   set: {
-    misperKey: value => window.localStorage.getItem(ITEM_MAP.MISPER_KEY, value),
+    misperKey: value => window.localStorage.setItem(ITEM_MAP.MISPER_KEY, value),
     userId: value => window.localStorage.setItem(ITEM_MAP.USER_ID, value),
     roomId: value => window.localStorage.setItem(ITEM_MAP.ROOM_ID, value),
   },
