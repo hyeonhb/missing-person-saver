@@ -92,20 +92,11 @@
   border-radius: 4px;
 }
 
-.send-button {
-  font-size: 16px;
-  background-color: #002853; /* 전송 버튼 배경색 */
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.report-button {
+  background-color: #e67e22;
 }
 
-.send-button:hover {
-  background-color: #002853; /* 전송 버튼 호버 시 배경색 */
-}
-
-button {
+.message-container button {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #002853; /* 재시작 버튼 배경색 */
@@ -115,7 +106,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.message-container button:hover {
   background-color: #002853; /* 재시작 버튼 호버 시 배경색 */
 }
 

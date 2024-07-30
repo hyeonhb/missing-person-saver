@@ -5,7 +5,7 @@ import Modal from '../components/Modal';
 import ReportOptions from '../components/ReportOptions'
 // Utils
 import storage from '../utils/storage';
-import { isEmptyObject } from '../utils/validator';
+import { isEmptyObject, isEmptyString } from '../utils/validator';
 import { formatResponseMsg } from '../utils/converter';
 // Styles
 import '../styles/Bubble.css';
@@ -18,6 +18,7 @@ const Chat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const hasNewMessage = () => !isEmptyString(newMessage);
   const [misperInfo, setMisperInfo] = useState({});
   const [answer, setAnswer] = useState({});
   const [showOptionsModal, setShowOptionsModal] = useState(false);
@@ -82,6 +83,9 @@ const Chat = () => {
   };
 
   const updateNewMsg = () => {
+    // 입력된 message가 없는데 호출 됐으면 early return
+    if (!hasNewMessage()) return;
+
     // user가 보낸 메시지를 BubbleList에 새로운 Bubble로 생성 (user-bubble)
     const updatedMsg = {
       text: newMessage,
@@ -146,7 +150,7 @@ const Chat = () => {
             if (e.key === 'Enter') updateNewMsg();
           }}
         />
-        <button className="send-button" onClick={updateNewMsg}>
+        <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
           전송
         </button>
       </div>
