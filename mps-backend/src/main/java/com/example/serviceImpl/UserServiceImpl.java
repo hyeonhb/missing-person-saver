@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 전화번호, 이름으로 사용자를 조회. 존재하지 않으면 주어진 값들로 새 사용자를 생성
+     * @param userMap(telno, name) 사용자 전화번호, 이름
+     * @return 기존에 존재하는 사용자가 있을 경우 해당 사용자, 없다면 새로 생성된 사용자
+     */
     @Override
     public Users getUser(Map userMap) {
         String name = userMap.get("name").toString();
