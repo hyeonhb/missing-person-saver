@@ -1,17 +1,29 @@
 package com.example.service;
 
 import com.example.entity.MissingPerson;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
 public interface MissingPersonService {
-    String getMissingPersonList(Map<String, String> queryParams);
-    String getMissingPersonInfo(Map<String, String> queryParams);
-
     /**
      * 실종자 조회
      * @param id
-     * @return 추후 api로 호출해 사용할 예정으로 정보 값이 무조건 있다는 것을 전제로 함
+     * @return MissingPerson
      */
     MissingPerson getMissingPerson(Long id);
+
+    /**
+     * 실종자 정보 조회
+     * @param queryParams(UUID roomId, String nm, String msspsnIdntfccd)
+     * @return ResponseEntity<Map<String, Object>>
+     */
+    ResponseEntity<Map<String, Object>> getMissingPersonInfo(Map<String, Object> queryParams) throws Exception;
+
+    /**
+     * 실종자 이미지 조회
+     * @param queryParams(String nm, String msspsnIdntfccd)
+     * @return ResponseEntity<byte[]>
+     */
+    ResponseEntity<byte[]> getMissingPersonImg(Map<String, Object> queryParams) throws Exception;
 }
