@@ -104,10 +104,6 @@ const Chat = () => {
     focusInput();
   }
 
-  const closeModal = () => {
-    setShowProfileModal(false);
-  };
-
   const handleModalSubmit = async informerInfo => {
     // Modal 컴포넌트에서 넘어온 제보자 정보를 API에 넘겨서 새로 생성된 userId와 roomId를 얻어오자
     const {userId, roomId} = await userApi.saveUserProfile(informerInfo);
@@ -132,7 +128,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      {showProfileModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
+      {showProfileModal && <Modal onClose={() => setShowProfileModal(false)} onSubmit={handleModalSubmit} />}
       <section className="chat-messages">
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
