@@ -4,6 +4,7 @@ import BubbleList from './BubbleList';
 import Modal from '../components/Modal';
 // Utils
 import storage from '../utils/storage';
+import { isEmptyObject } from '../utils/validator';
 import { formatResponseMsg } from '../utils/converter';
 // Styles
 import '../styles/Bubble.css';
@@ -16,7 +17,8 @@ const Chat = () => {
   const [showModal, setShowModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const  [misperInfo, setMisperInfo] = useState({});
+  const [misperInfo, setMisperInfo] = useState({});
+  const [answer, setAnswer] = useState({});
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -26,6 +28,16 @@ const Chat = () => {
     if (!userId) openModal(); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
+
+  useEffect(() => {
+    const hasAnswer = !isEmptyObject(answer);
+    if (hasAnswer) {
+      setMessages([...messages, answer]);
+
+      // 답변 초기화
+      setAnswer({});
+    }
+  }, [answer]);
 
   useEffect(() => {
     scrollToBottom();
@@ -55,12 +67,13 @@ const Chat = () => {
     setNewMessage(e.target.value);
   };
 
-  const updateNewMsg = async () => {
+  const updateNewMsg = () => {
     // user가 보낸 메시지를 BubbleList에 새로운 Bubble로 생성 (user-bubble)
     const updatedMsg = {
       text: newMessage,
       isUser: true,
     };
+    setMessages([...messages, updatedMsg]);
     setNewMessage(''); // 입력창 값 초기화
 
     // 신규 질문에 대한 답변 가져와서 이것도 새로운 Bubble로 생성 (bot-bubble)
@@ -68,9 +81,10 @@ const Chat = () => {
       question: updatedMsg.text,
       roomId: storage.get.roomId(),
     };
-    const answer = await messageApi.getAnswer(param);
-
-    setMessages([...messages, ...[updatedMsg, formatResponseMsg(answer)]]);
+    messageApi.getAnswer(param).then(response => {
+      const formattedAnswer = formatResponseMsg(response);
+      setAnswer(formattedAnswer);
+    });
 
     // 버튼을 직접 눌렀을 때를 대비한 auto focusing
     focusInput();
