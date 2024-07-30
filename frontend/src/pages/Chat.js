@@ -4,6 +4,7 @@ import BubbleList from './BubbleList';
 import Modal from '../components/Modal';
 // Utils
 import storage from '../utils/storage';
+import { formatResponseMsg } from '../utils/converter';
 // Styles
 import '../styles/Bubble.css';
 // API
@@ -45,12 +46,7 @@ const Chat = () => {
     if (!roomId) return;
 
     const response = await messageApi.getMessageHistory({roomId});
-    const histories = response.messages.map(msg => {
-      return {
-        text: msg.content,
-        isUser: msg.type !== 2,
-      };
-    });
+    const histories = response.messages.map(msg => formatResponseMsg(msg));
 
     setMessages([...histories]);
   };
@@ -59,16 +55,29 @@ const Chat = () => {
     setNewMessage(e.target.value);
   };
 
-  const updateNewMsg = () => {
+  const updateNewMsg = async () => {
+    // user가 보낸 메시지를 BubbleList에 새로운 Bubble로 생성 (user-bubble)
     const updatedMsg = {
       text: newMessage,
       isUser: true,
     };
+    setNewMessage(''); // 입력창 값 초기화
 
-    setNewMessage('');
-    setMessages([...messages, updatedMsg]);
+    // 신규 질문에 대한 답변 가져와서 이것도 새로운 Bubble로 생성 (bot-bubble)
+    const param = {
+      question: updatedMsg.text,
+      roomId: storage.get.roomId(),
+    };
+    const answer = await messageApi.getAnswer(param);
 
+    setMessages([...messages, ...[updatedMsg, formatResponseMsg(answer)]]);
+
+    // 버튼을 직접 눌렀을 때를 대비한 auto focusing
     focusInput();
+  }
+
+  function updateAnswer() {
+    
   }
 
   const closeModal = () => {
