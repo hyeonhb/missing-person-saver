@@ -15,7 +15,7 @@ import misperApi from '../api/misperApi';
 import messageApi from '../api/messageApi';
 
 const Chat = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [misperInfo, setMisperInfo] = useState({});
@@ -27,7 +27,7 @@ const Chat = () => {
 
   useEffect(() => {
     const userId = storage.get.userId();
-    if (!userId) openModal(); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
+    if (!userId) setShowProfileModal(true); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
 
@@ -60,10 +60,6 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  function openModal() {
-    setShowModal(true);
-  }
 
   const initRoom = async () => {
     // 실종자 정보 셋업
@@ -113,7 +109,7 @@ const Chat = () => {
   }
 
   const closeModal = () => {
-    setShowModal(false);
+    setShowProfileModal(false);
   };
 
   const handleModalSubmit = async informerInfo => {
@@ -140,7 +136,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      {showModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
+      {showProfileModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
       <section className="chat-messages">
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
