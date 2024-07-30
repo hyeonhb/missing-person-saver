@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 // Components
 import BubbleList from './BubbleList'; 
 import Modal from '../components/Modal';
+import ReportOptions from '../components/ReportOptions'
 // Utils
 import storage from '../utils/storage';
 import { isEmptyObject } from '../utils/validator';
@@ -19,6 +20,7 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
   const [misperInfo, setMisperInfo] = useState({});
   const [answer, setAnswer] = useState({});
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -144,21 +146,23 @@ const Chat = () => {
         <div ref={messagesEndRef} />
       </section>
       <div className="chat-input-container">
-          <input
-            ref={inputRef}
-            type="text"
-            className="chat-input"
-            placeholder="메시지를 입력하세요."
-            value={newMessage}
-            onChange={handleInputChange}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') updateNewMsg();
-            }}
-          />
-          <button className="send-button" onClick={updateNewMsg}>
-            전송
-          </button>
-        </div>
+        <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
+        <input
+          ref={inputRef}
+          type="text"
+          className="chat-input"
+          placeholder="메시지를 입력하세요."
+          value={newMessage}
+          onChange={handleInputChange}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') updateNewMsg();
+          }}
+        />
+        <button className="send-button" onClick={updateNewMsg}>
+          전송
+        </button>
+      </div>
+      {showOptionsModal && <ReportOptions onClose={() => setShowOptionsModal(false)} />}
     </div>
   );
 };
