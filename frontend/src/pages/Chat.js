@@ -15,7 +15,7 @@ import misperApi from '../api/misperApi';
 import messageApi from '../api/messageApi';
 
 const Chat = () => {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [misperInfo, setMisperInfo] = useState({});
