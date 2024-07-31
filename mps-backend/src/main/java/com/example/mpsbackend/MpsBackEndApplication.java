@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.example.controller", "com.example.service", "com.example.serviceImpl" })
+@ComponentScan(basePackages = { "com.example.controller", "com.example.service", "com.example.serviceImpl", "com.example.config" })
 @EntityScan(basePackages = { "com.example.entity" })
 @EnableJpaRepositories(basePackages = { "com.example.repository" })
 public class MpsBackEndApplication {

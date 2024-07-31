@@ -1,5 +1,7 @@
 package com.example.dto;
 
+import com.example.entity.Users;
+
 public class UserDTO {
     private Long id;
     private String name;
@@ -27,5 +29,14 @@ public class UserDTO {
 
     public void setTelno(String telno) {
         this.telno = telno;
+    }
+
+    public UserDTO setDto(Users user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getUserId());
+        userDTO.setTelno(user.getTelno());
+        userDTO.setName(user.getName());
+
+        return userDTO;
     }
 }

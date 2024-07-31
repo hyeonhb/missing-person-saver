@@ -1,17 +1,14 @@
 package com.example.controller;
 
-//import com.example.dto.CompletionRequestDto;
-//import com.example.dto.RequestData;
-//import com.example.service.ChatGptService;
 import com.example.dto.ChatMessageDTO;
 import com.example.entity.ChatRoom;
+import com.example.service.ChatGptService;
 import com.example.service.ChatMessageService;
 import com.example.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +23,9 @@ public class ChatMessageController {
     @Autowired
     private ChatRoomService chatRoomService;
 
+    @Autowired
+    private ChatGptService chatGptService;
+
     @GetMapping("/test")
     public List<ChatMessageDTO> getMessageHistory(@RequestParam("roomId") UUID roomId) {
         ChatRoom chatRoom = chatRoomService.getChatRoomEntity(roomId);
@@ -38,5 +38,20 @@ public class ChatMessageController {
         ChatRoom chatRoom = chatRoomService.getChatRoomEntity(roomId);
 
         return chatMessageService.saveMessage(chatRoom,msgMap);
+    }
+
+    @PostMapping("/get-model-list")
+    public List<Map<String, Object>> getModelList() {
+        List<Map<String, Object>> list = chatGptService.modelList();
+
+        return list;
+    }
+
+    @PostMapping("/ask-basic-info")
+    public Map<String, Object> askBasicInfo(@RequestBody Map<String, String> request) {
+        String userQuestion = request.get("message");
+        Map<String, Object> answer = chatGptService.prompt(userQuestion);
+
+        return answer;
     }
 }

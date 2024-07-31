@@ -27,11 +27,6 @@ public class UserController {
     @Autowired
     private ChatRoomService chatRoomService;
 
-    @GetMapping("/home")
-    public String home(@RequestParam("test") String test) {
-        return test; // admin_home.jsp
-    }
-
     @GetMapping
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();

@@ -36,6 +36,9 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> msgList = new ArrayList<>(); // ChatMessage 1:N 관계
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<PhotoReport> photoReportList = new ArrayList<>(); // PhotoReport 1:N 관계
+
     public ChatRoom() {}
 
     @Builder

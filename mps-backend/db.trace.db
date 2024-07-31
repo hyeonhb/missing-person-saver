@@ -1,0 +1,3 @@
+2024-07-31 00:10:25.956497+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "U&'\\c1a1\\ae08\\c120' (MISSING_PERSON: ""MISSING_DATE"" INTEGER NOT NULL)"; SQL statement:
+INSERT INTO MISSING_PERSON VALUES(5768021, '송금선', '20231231') [22018-224]
