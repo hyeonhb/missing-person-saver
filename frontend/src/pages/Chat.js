@@ -42,7 +42,6 @@ const Chat = () => {
         text += `${key}: ${misperInfo[key]}\n`;
       }
 
-      
       setMessages([{text, isUser: false}, ...messages]);
     }
   }, [misperInfo]);
@@ -137,23 +136,25 @@ const Chat = () => {
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
       </section>
-      <div className="chat-input-container">
-        <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
-        <input
-          ref={inputRef}
-          type="text"
-          className="chat-input"
-          placeholder="질문을 입력해 주세요."
-          value={newMessage}
-          onChange={handleInputChange}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') updateNewMsg();
-          }}
-        />
-        <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
-          전송
-        </button>
-      </div>
+      {!showProfileModal &&
+        <div className="chat-input-container">
+          <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
+          <input
+            ref={inputRef}
+            type="text"
+            className="chat-input"
+            placeholder="질문을 입력해 주세요."
+            value={newMessage}
+            onChange={handleInputChange}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') updateNewMsg();
+            }}
+          />
+          <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
+            전송
+          </button>
+        </div>
+      }
       {showOptionsModal && <ReportOptions onClose={() => setShowOptionsModal(false)} />}
     </div>
   );
