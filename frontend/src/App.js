@@ -21,7 +21,7 @@ function App() {
 
   return (
     <section className='container'>
-      <Header title='MPS(Missing Person Saver)' />
+      <Header title='MPS(실종자 제보 서비스)' />
       <Chat />
     </section>   
   );
