@@ -42,7 +42,7 @@ const Modal = ({ onClose, onSubmit }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>제보자 정보 입력</h2>
+        <p>제보자 정보 입력</p>
         <div>
           <label>이름</label>
           <input 

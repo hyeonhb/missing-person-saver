@@ -16,15 +16,16 @@
   align-items: center;
   background-color: #fff;
   padding: 20px;
+  margin: 20px;
   border-radius: 8px;
   width: 300px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  text-align: center;
 }
 
-.modal-content h2 {
-  align-self: flex-start;
-  margin-bottom: 20px;
+.modal-content p {
+  font-size: 20px;
+  margin: 10px;
 }
 
 .modal-content div {
@@ -35,8 +36,8 @@
 
 .modal-content label {
   display: block;
+  margin-top: 5px;
   margin-bottom: 5px;
-  font-weight: bold;
 }
 
 .modal-content input {
@@ -49,14 +50,18 @@
 
 .modal-content button {
   align-self: flex-end;
+  width: 100%;
+  max-width: 310px;
   padding: 10px 20px;
-  background-color: #002853;
+  background-color: #0067a5;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
+  height: 48px;
 }
 
 .modal-content button:hover {
-  background-color: #002853;
+  background-color: #0067a5;
 }

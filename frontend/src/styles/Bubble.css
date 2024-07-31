@@ -23,7 +23,7 @@
 
 .user .bubble {
   align-self: flex-end;
-  background-color: #002853; /* 사용자 메시지 색상 */
+  background-color: #0067a5; /* 사용자 메시지 색상 */
   color: #fff;
 }
 
@@ -36,7 +36,8 @@
 }
 
 .bot .bubble {
-  background-color: #f0f0f0; /* 챗봇 메시지 색상 */
+  background-color: #f5f5f5; /* 챗봇 메시지 색상 */
+  color: #616161;
 }
 
 .bot .profile {
