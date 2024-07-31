@@ -32,8 +32,9 @@ const Chat = () => {
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
 
-  // 실종자 정보 셋업
+  
   useEffect(() => {
+    // 실종자 정보 셋업
     const hasMisperInfo = !isEmptyObject(misperInfo);
     if (hasMisperInfo) {
       let text = '아래 실종자의 제보 및 QnA 창입니다.\n\n';
@@ -42,7 +43,15 @@ const Chat = () => {
         text += `${key}: ${misperInfo[key]}\n`;
       }
 
-      setMessages([{text, isUser: false}, ...messages]);
+      // roomId가 있으면 기존 채팅 내역을 불러와서 셋업
+      const roomId = storage.get.roomId();
+      if (!roomId) return;
+
+      messageApi.getMessageHistory({roomId}).then(response => {
+        const histories = response.messages.map(msg => formatResponseMsg(msg));
+
+        setMessages([{text, isUser: false}, ...messages, ...histories]);
+      });
     }
   }, [misperInfo]);
 
@@ -66,15 +75,6 @@ const Chat = () => {
     const key = storage.get.misperKey();
     const info = await misperApi.getMisperInfo({uid: key});
     setMisperInfo(info);
-
-    // roomId가 있으면 기존 채팅 내역을 불러와서 셋업해주자.
-    const roomId = storage.get.roomId();
-    if (!roomId) return;
-
-    const response = await messageApi.getMessageHistory({roomId});
-    const histories = response.messages.map(msg => formatResponseMsg(msg));
-
-    setMessages([...histories]);
   };
 
   const handleInputChange = (e) => {
