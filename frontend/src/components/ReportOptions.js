@@ -8,7 +8,7 @@ import ReportCall from './reports/ReportCall';
 import ReportGPS from './reports/ReportGPS';
 import ReportImage from './reports/ReportImage';
 
-const Reportoptions = ({ onClose }) => {
+const ReportOptions = ({ onClose }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionClick = (option) => {
@@ -39,4 +39,4 @@ const Reportoptions = ({ onClose }) => {
   );
 };
 
-export default Reportoptions;
+export default ReportOptions;
