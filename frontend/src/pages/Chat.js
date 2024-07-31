@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 // Components
-import BubbleList from './BubbleList'; 
+import BubbleList from '../components/BubbleList'; 
 import Modal from '../components/Modal';
 import ReportOptions from '../components/ReportOptions'
 // Utils
 import storage from '../utils/storage';
-import { isEmptyObject } from '../utils/validator';
+import { isEmptyObject, isEmptyString } from '../utils/validator';
 import { formatResponseMsg } from '../utils/converter';
 // Styles
 import '../styles/Bubble.css';
@@ -15,9 +15,10 @@ import misperApi from '../api/misperApi';
 import messageApi from '../api/messageApi';
 
 const Chat = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const hasNewMessage = () => !isEmptyString(newMessage);
   const [misperInfo, setMisperInfo] = useState({});
   const [answer, setAnswer] = useState({});
   const [showOptionsModal, setShowOptionsModal] = useState(false);
@@ -27,7 +28,7 @@ const Chat = () => {
 
   useEffect(() => {
     const userId = storage.get.userId();
-    if (!userId) openModal(); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
+    if (!userId) setShowProfileModal(true); // userId가 아직 없으면 제보자 정보 입력받는 Modal부터 띄워주자.
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
 
@@ -61,10 +62,6 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-  function openModal() {
-    setShowModal(true);
-  }
-
   const initRoom = async () => {
     // 실종자 정보 셋업
     const key = storage.get.misperKey();
@@ -86,6 +83,9 @@ const Chat = () => {
   };
 
   const updateNewMsg = () => {
+    // 입력된 message가 없는데 호출 됐으면 early return
+    if (!hasNewMessage()) return;
+
     // user가 보낸 메시지를 BubbleList에 새로운 Bubble로 생성 (user-bubble)
     const updatedMsg = {
       text: newMessage,
@@ -107,14 +107,6 @@ const Chat = () => {
     // 버튼을 직접 눌렀을 때를 대비한 auto focusing
     focusInput();
   }
-
-  function updateAnswer() {
-    
-  }
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   const handleModalSubmit = async informerInfo => {
     // Modal 컴포넌트에서 넘어온 제보자 정보를 API에 넘겨서 새로 생성된 userId와 roomId를 얻어오자
@@ -140,7 +132,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      {showModal && <Modal onClose={closeModal} onSubmit={handleModalSubmit} />}
+      {showProfileModal && <Modal onClose={() => setShowProfileModal(false)} onSubmit={handleModalSubmit} />}
       <section className="chat-messages">
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
@@ -151,14 +143,14 @@ const Chat = () => {
           ref={inputRef}
           type="text"
           className="chat-input"
-          placeholder="메시지를 입력하세요."
+          placeholder="질문을 입력해 주세요."
           value={newMessage}
           onChange={handleInputChange}
           onKeyPress={(e) => {
             if (e.key === 'Enter') updateNewMsg();
           }}
         />
-        <button className="send-button" onClick={updateNewMsg}>
+        <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
           전송
         </button>
       </div>

@@ -9,7 +9,7 @@ const BubbleList = ({ messages }) => {
         <div key={index} className={`message-container ${message.isUser ? 'user' : 'bot'}`}>
           {!message.isUser && (
               <div className="profile">
-                <img src={message.profileImg} alt="Profile" className="profile-img" />
+                <img src="/chatbot_icon.png" alt="Profile" className="profile-img" />
               </div>
             )}
             <Bubble text={message.text} />
