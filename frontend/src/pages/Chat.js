@@ -47,10 +47,9 @@ const Chat = () => {
 
       // roomId가 있으면 기존 채팅 내역을 불러와서 셋업
       const roomId = storage.get.roomId();
-      console.log('chk : ' + roomId);
       if (!roomId) return;
 
-      messageApi.getMessageHistory(roomId).then(response => {
+      messageApi.getMessageHistory().then(response => {
         const histories = response.map(msg => formatResponseMsg(msg));
 
         setMessages([{text, isUser: false}, ...messages, ...histories]);
@@ -100,7 +99,7 @@ const Chat = () => {
     // 신규 질문에 대한 답변 가져와서 이것도 새로운 Bubble로 생성 (bot-bubble)
     const param = {
       question: updatedMsg.text,
-      roomId: storage.get.roomId(),
+      type: 1,
     };
     messageApi.saveMessages(param).then(response => {
       const formattedAnswer = formatResponseMsg(response);
