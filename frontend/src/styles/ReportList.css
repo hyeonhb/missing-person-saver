@@ -1,0 +1,16 @@
+.report-list {
+    padding: 20px;
+    background: #f9f9f9;
+  }
+  
+  .report-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+  }
+  
+  .report-item h3 {
+    margin-top: 0;
+  }
