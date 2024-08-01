@@ -58,15 +58,15 @@ public class MissingPersonController {
             String os = System.getProperty("os.name").toLowerCase();
             String pythonCommand;
             if (os.contains("win")) {
-                pythonCommand = "C:\\Path\\To\\Python\\python.exe"; // Windows에서의 절대 경로
+                pythonCommand = "C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe"; // Windows에서의 절대 경로
             } else {
                 pythonCommand = "/usr/bin/python"; // Unix 계열 OS에서의 절대 경로
             }
 
             List<String> command = new ArrayList<>();
-            
+
             command.add(pythonCommand);
-            command.add("/missing-person-saver/python-model/face_detection.py");
+            command.add("/C:/workspace/missing-person-saver/python-model/face_feature_classifier.py");
             command.add(roomId.toString());
 
             ProcessBuilder processBuilder = new ProcessBuilder(command);

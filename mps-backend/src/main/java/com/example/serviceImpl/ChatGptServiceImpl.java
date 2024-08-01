@@ -34,7 +34,7 @@ public class ChatGptServiceImpl implements ChatGptService {
     private static final String ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     @Override
-    public Map<String, Object> prompt(String msg) {
+    public Map<String, Object> prompt(String msg, String base) {
         // [STEP1] 토큰 정보가 포함된 Header를 가져옵니다.
         HttpHeaders headers = openApiConfig.httpHeaders();
 
@@ -45,7 +45,7 @@ public class ChatGptServiceImpl implements ChatGptService {
         Map<String, Object> requestDto = new HashMap<>();
         requestDto.put("model", openApiConfig.getGptModel());
         requestDto.put("messages", new Object[]{
-                Map.of("role", "system", "content", "그녀는 쌍커풀이 있고 계란형 얼굴이며 앞머리가 있다."), // 답변 배경 정보
+                Map.of("role", "system", "content", base), // 답변 배경 정보
                 Map.of("role", "user", "content", msg)}); // 질문
         requestDto.put("temperature", 0.8);
 
