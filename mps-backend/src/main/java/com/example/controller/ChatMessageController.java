@@ -26,7 +26,7 @@ public class ChatMessageController {
     @Autowired
     private ChatGptService chatGptService;
 
-    @GetMapping("/test")
+    @GetMapping("/get-messages")
     public List<ChatMessageDTO> getMessageHistory(@RequestParam("roomId") UUID roomId) {
         ChatRoom chatRoom = chatRoomService.getChatRoomEntity(roomId);
 
@@ -38,13 +38,6 @@ public class ChatMessageController {
         ChatRoom chatRoom = chatRoomService.getChatRoomEntity(roomId);
 
         return chatMessageService.saveMessage(chatRoom,msgMap);
-    }
-
-    @PostMapping("/get-model-list")
-    public List<Map<String, Object>> getModelList() {
-        List<Map<String, Object>> list = chatGptService.modelList();
-
-        return list;
     }
 
     @PostMapping("/ask-basic-info")
