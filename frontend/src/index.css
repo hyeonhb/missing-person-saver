@@ -37,7 +37,8 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
-  background-color: #0067A5;
+  background-color: #00366c
+  ;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -49,7 +50,8 @@ input {
 }
 
 input:focus-visible {
-  outline-color: #0067A5;
+  outline-color: #00366c
+  ;
 }
 
 input::placeholder {

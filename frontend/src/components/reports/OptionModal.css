@@ -30,7 +30,7 @@
     max-height: 100px;
     padding: 10px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid #676767;
     border-radius: 4px;
 
   }
@@ -46,7 +46,8 @@
   .option-modal button {
     width: 100%;
     padding: 10px 20px;
-    background-color: #0067a5;
+    background-color: #00366c
+    ;
     color: white;
     border: none;
     border-radius: 5px;
@@ -54,5 +55,6 @@
   }
   
   .option-modal button:hover {
-    background-color: #0067a5;
+    background-color: #00366c
+    ;
   }
