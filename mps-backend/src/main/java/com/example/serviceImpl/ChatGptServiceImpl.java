@@ -44,7 +44,9 @@ public class ChatGptServiceImpl implements ChatGptService {
         // [STEP3] properties의 model을 가져와서 객체에 추가합니다.
         Map<String, Object> requestDto = new HashMap<>();
         requestDto.put("model", openApiConfig.getGptModel());
-        requestDto.put("messages", createMessages(msg));
+        requestDto.put("messages", new Object[]{
+                Map.of("role", "system", "content", "그녀는 쌍커풀이 있고 계란형 얼굴이며 앞머리가 있다."), // 답변 배경 정보
+                Map.of("role", "user", "content", msg)}); // 질문
         requestDto.put("temperature", 0.8);
 
         try {
