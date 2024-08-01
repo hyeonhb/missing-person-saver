@@ -16,7 +16,6 @@ const ReportMessage = ({ onClose, onSubmit }) => {
   return (
     <div className="option-modal">
       <div className="option-modal-content">
-        <h2>제보할 내용을 입력해주세요</h2>
         <textarea value={message} onChange={handleChange} />
         <div className="button-container">
           <button onClick={handleSubmit}>제보</button>

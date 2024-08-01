@@ -60,7 +60,6 @@ const ReportGPS = ({ onClose }) => {
   return (
     <div className="option-modal">
       <div className="option-modal-content">
-        <h2>위치 제보</h2>
         <div id="map-container" />
         <button onClick={onClose}>닫기</button>
       </div>
