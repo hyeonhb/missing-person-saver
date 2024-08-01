@@ -51,11 +51,12 @@ public class MissingPersonServiceImpl implements MissingPersonService {
      * @return ResponseEntity<Map < String, Object>>
      */
     @Override
-    public ResponseEntity getMissingPersonInfo(Map<String, Object> queryParams) throws Exception{
+    public ResponseEntity getMissingPersonInfo(Map<String, Object> queryParams) throws Exception {
         queryParams.put("esntlId", openApiConfig.getApiId());
         queryParams.put("authKey", openApiConfig.getApiKey());
         queryParams.put("rowSize", "10");
 
+        // 데이터를 가져옴 ([자료 출처: 경찰청])
         String urlString = "https://www.safe182.go.kr/api/lcm/amberList.do";
         try {
             String queryString = queryParams.entrySet().stream()
@@ -108,6 +109,8 @@ public class MissingPersonServiceImpl implements MissingPersonService {
                     byte[] imageBytes = this.decodeImg(tknphotoFile);
 
                     result.put("tknphotoFile", imageBytes);
+
+                    result.put("source", "[자료 출처: 경찰청]");
 
                     // 응답 헤더 설정
                     HttpHeaders headers = new HttpHeaders();
