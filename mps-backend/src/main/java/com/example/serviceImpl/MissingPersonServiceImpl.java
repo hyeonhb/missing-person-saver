@@ -147,7 +147,7 @@ public class MissingPersonServiceImpl implements MissingPersonService {
                 return new ResponseEntity<>(retrievedByteArray, headers, HttpStatus.OK);
             } else {
                 System.out.println("The value is not a byte array.");
-                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

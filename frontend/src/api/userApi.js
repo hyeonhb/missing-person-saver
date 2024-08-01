@@ -4,17 +4,16 @@ const userApi = {
     getTestResponse: async () => {
         return await apiController.get('https://jsonplaceholder.typicode.com/posts')
     },
+
     /**
-     * @param {object} request - name: String, contact: String
+     * @param {object} request - mpId: String, body: {name: String, contact: String}
      * @returns {object} roomId: String, userId: Number
      */
-    saveUserProfile: async param => {
-        return new Promise(res => {
-            res({
-                roomId: 1111,
-                userId: 9999,
-            });
-        });
+    getChatRoom: async (mpId, body) => {
+        return await apiController.post('/users/login', {mpId: mpId}, {
+            name: body.name,
+            telno: body.contact
+        } );
     },
 }
 

@@ -45,10 +45,11 @@ const Chat = () => {
 
       // roomId가 있으면 기존 채팅 내역을 불러와서 셋업
       const roomId = storage.get.roomId();
+      console.log('chk : ' + roomId);
       if (!roomId) return;
 
-      messageApi.getMessageHistory({roomId}).then(response => {
-        const histories = response.messages.map(msg => formatResponseMsg(msg));
+      messageApi.getMessageHistory(roomId).then(response => {
+        const histories = response.map(msg => formatResponseMsg(msg));
 
         setMessages([{text, isUser: false}, ...messages, ...histories]);
       });
@@ -70,10 +71,11 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const initRoom = async () => {
+  const initRoom = async (roomId) => {
     // 실종자 정보 셋업
     const key = storage.get.misperKey();
-    const info = await misperApi.getMisperInfo({uid: key});
+    const info = await misperApi.getMisperInfos(roomId);
+
     setMisperInfo(info);
   };
 
@@ -98,7 +100,7 @@ const Chat = () => {
       question: updatedMsg.text,
       roomId: storage.get.roomId(),
     };
-    messageApi.getAnswer(param).then(response => {
+    messageApi.saveMessages(param).then(response => {
       const formattedAnswer = formatResponseMsg(response);
       setAnswer(formattedAnswer);
     });
@@ -109,14 +111,14 @@ const Chat = () => {
 
   const handleModalSubmit = async informerInfo => {
     // Modal 컴포넌트에서 넘어온 제보자 정보를 API에 넘겨서 새로 생성된 userId와 roomId를 얻어오자
-    const {userId, roomId} = await userApi.saveUserProfile(informerInfo);
+    const {userId, roomId} = await userApi.getChatRoom(storage.get.misperKey(),informerInfo);
 
     // 위 API 얻어돈 ID 값들을 storage에 저장
     storage.set.userId(userId);
     storage.set.roomId(roomId);
 
     // 채팅 시작
-    initRoom();
+    await initRoom(roomId);
   };
 
   const scrollToBottom = () => {
