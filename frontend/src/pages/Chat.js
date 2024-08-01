@@ -100,6 +100,7 @@ const Chat = () => {
     const param = {
       question: updatedMsg.text,
       type: 1,
+      detailType: storage.get.questionType(),
     };
     messageApi.saveMessages(param).then(response => {
       const formattedAnswer = formatResponseMsg(response);
@@ -123,6 +124,7 @@ const Chat = () => {
   };
 
   const handleQuestionModalSubmit = (questionType) => {
+    storage.set.questionType(questionType);
     setShowQuestionModal(false);
   }
 
