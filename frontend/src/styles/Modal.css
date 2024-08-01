@@ -67,3 +67,34 @@
   background-color: #00366c
   ;
 }
+
+.radio-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid lightgray;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.radio-container button:disabled {
+  background-color: gray !important;
+  color: white !important;
+}
+
+.activated {
+  border-color: #00366c;
+}

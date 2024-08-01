@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import BubbleList from '../components/BubbleList'; 
 import Modal from '../components/Modal';
 import ReportOptions from '../components/ReportOptions'
+import QuestionTypeModal from '../components/QuestionTypeModal';
 // Utils
 import storage from '../utils/storage';
 import { isEmptyObject, isEmptyString } from '../utils/validator';
@@ -16,6 +17,7 @@ import messageApi from '../api/messageApi';
 
 const Chat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showQuestionModal, setShowQuestionModal] = useState(true);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const hasNewMessage = () => !isEmptyString(newMessage);
@@ -121,6 +123,10 @@ const Chat = () => {
     await initRoom(roomId);
   };
 
+  const handleQuestionModalSubmit = (questionType) => {
+    setShowQuestionModal(false);
+  }
+
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -134,6 +140,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       {showProfileModal && <Modal onClose={() => setShowProfileModal(false)} onSubmit={handleModalSubmit} />}
+      {showQuestionModal && <QuestionTypeModal onClose={() => setShowQuestionModal(false)} onSubmit={handleQuestionModalSubmit} />}
       <section className="chat-messages">
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
