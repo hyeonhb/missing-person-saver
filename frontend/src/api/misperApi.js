@@ -1,4 +1,5 @@
 import apiController from "./apiController";
+import storage from "../utils/storage";
 
 // misper: 실종자
 const misperApi = {
@@ -24,8 +25,8 @@ const misperApi = {
      * @param roomId
      */
 
-    getMisperInfos: async (roomId) => {
-        return await apiController.get('/missing-persons/find-info', {roomId: roomId});
+    getMisperInfos: async () => {
+        return await apiController.get('/missing-persons/find-info', {roomId: storage.get.roomId()});
     }
 }
 

@@ -73,10 +73,10 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const initRoom = async (roomId) => {
+  const initRoom = async () => {
     // 실종자 정보 셋업
     const key = storage.get.misperKey();
-    const info = await misperApi.getMisperInfos(roomId);
+    const info = await misperApi.getMisperInfos();
 
     setMisperInfo(info);
   };
@@ -120,7 +120,7 @@ const Chat = () => {
     storage.set.roomId(roomId);
 
     // 채팅 시작
-    await initRoom(roomId);
+    await initRoom();
   };
 
   const handleQuestionModalSubmit = (questionType) => {
