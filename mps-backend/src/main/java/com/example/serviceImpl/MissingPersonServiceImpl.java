@@ -21,10 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,16 +133,22 @@ public class MissingPersonServiceImpl implements MissingPersonService {
     public ResponseEntity<byte[]> getMissingPersonImg(Map<String, Object> queryParams) throws Exception {
         ResponseEntity<Map<String, Object>> responseEntity = this.getMissingPersonInfo(queryParams);
         try {
-            // tknphotoFile 디코딩
-            String tknphotoFile = responseEntity.getBody().get("tknphotoFile").toString();
-            byte[] imageBytes = this.decodeImg(tknphotoFile);
 
-            // 이미지 데이터를 응답으로 반환
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "image/jpeg");
-            headers.set("Content-Length", String.valueOf(imageBytes.length));
+            // Map에서 byte[] 값을 꺼내기
+            Object value = responseEntity.getBody().get("tknphotoFile");
 
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+            if (value instanceof byte[]) {
+                byte[] retrievedByteArray = (byte[]) value;
+                // 이미지 데이터를 응답으로 반환
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Content-Type", "image/jpeg");
+                headers.set("Content-Length", String.valueOf(retrievedByteArray.length));
+
+                return new ResponseEntity<>(retrievedByteArray, headers, HttpStatus.OK);
+            } else {
+                System.out.println("The value is not a byte array.");
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
