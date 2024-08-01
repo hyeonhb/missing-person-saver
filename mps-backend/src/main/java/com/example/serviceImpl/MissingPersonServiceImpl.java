@@ -106,6 +106,12 @@ public class MissingPersonServiceImpl implements MissingPersonService {
                     Map result = new HashMap<>();
                     result = new ObjectMapper().readValue(targetObject.toString(), Map.class);
 
+                    // tknphotoFile 디코딩
+                    String tknphotoFile = result.get("tknphotoFile").toString();
+                    byte[] imageBytes = this.decodeImg(tknphotoFile);
+
+                    result.put("tknphotoFile", imageBytes);
+
                     // 응답 헤더 설정
                     HttpHeaders headers = new HttpHeaders();
                     headers.set("Content-Type", "application/json");
@@ -132,10 +138,7 @@ public class MissingPersonServiceImpl implements MissingPersonService {
         try {
             // tknphotoFile 디코딩
             String tknphotoFile = responseEntity.getBody().get("tknphotoFile").toString();
-            tknphotoFile = tknphotoFile.replaceAll("\\s+", ""); // 모든 공백 문자 제거
-
-            // Base64 디코딩
-            byte[] imageBytes = Base64.getDecoder().decode(tknphotoFile.getBytes());
+            byte[] imageBytes = this.decodeImg(tknphotoFile);
 
             // 이미지 데이터를 응답으로 반환
             HttpHeaders headers = new HttpHeaders();
@@ -146,5 +149,12 @@ public class MissingPersonServiceImpl implements MissingPersonService {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private byte[] decodeImg(String tknphotoFile) {
+        tknphotoFile = tknphotoFile.replaceAll("\\s+", ""); // 모든 공백 문자 제거
+
+        // Base64 디코딩
+        return Base64.getDecoder().decode(tknphotoFile.getBytes());
     }
 }
