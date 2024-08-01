@@ -3,7 +3,7 @@
 import React from 'react';
 import './OptionModal.css';
 
-const ReportCall = ({ onClose }) => {
+const ReportCall = () => {
   const handleCall = () => {
     window.location.href = 'tel:182';
   };
@@ -13,7 +13,6 @@ const ReportCall = ({ onClose }) => {
       <div className="option-modal-content">
         <div className="button-container">
             <button onClick={handleCall}>182로 전화연결</button>
-            <button onClick={onClose}>닫기</button>
             </div>
       </div>
     </div>

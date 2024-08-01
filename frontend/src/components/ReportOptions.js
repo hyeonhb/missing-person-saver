@@ -28,7 +28,7 @@ const ReportOptions = ({ onClose }) => {
     setSelectedOption(option);
   };
 
-  const closeModal = () => {
+  const backToModalHome = () => {
     setSelectedOption('default');
   };
 
@@ -37,7 +37,7 @@ const ReportOptions = ({ onClose }) => {
       <div className="report-options-content">
         <div className="report-header">
           <h2>{headerTitle}</h2>
-          <p className='report-closer' onClick={onClose}>✕</p>
+          <p className='report-closer' onClick={selectedOption === 'default' ? onClose : backToModalHome}>✕</p>
         </div>
 
         {selectedOption === 'default' && 
@@ -49,10 +49,10 @@ const ReportOptions = ({ onClose }) => {
           </div>
         }
 
-        {selectedOption === 'message' && <ReportMessage onClose={closeModal} onSubmit={(message) => alert(`제보 메시지: ${message}`)} />}
-        {selectedOption === 'call' && <ReportCall onClose={closeModal} />}
-        {selectedOption === 'gps' && <ReportGPS onClose={closeModal} />}
-        {selectedOption === 'image' && <ReportImage onClose={closeModal} onSubmit={(image) => alert(`제보 이미지: ${image.name}`)} />}
+        {selectedOption === 'message' && <ReportMessage onSubmit={(message) => alert(`제보 메시지: ${message}`)} />}
+        {selectedOption === 'call' && <ReportCall />}
+        {selectedOption === 'gps' && <ReportGPS />}
+        {selectedOption === 'image' && <ReportImage onSubmit={(image) => alert(`제보 이미지: ${image.name}`)} />}
       </div>
     </div>
   );

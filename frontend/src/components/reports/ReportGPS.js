@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import './OptionModal.css';
 
-const ReportGPS = ({ onClose }) => {
+const ReportGPS = () => {
   const [marker, setMarker] = useState(null);
 
   useEffect(() => {
@@ -61,7 +61,6 @@ const ReportGPS = ({ onClose }) => {
     <div className="option-modal">
       <div className="option-modal-content">
         <div id="map-container" />
-        <button onClick={onClose}>닫기</button>
       </div>
     </div>
   );
