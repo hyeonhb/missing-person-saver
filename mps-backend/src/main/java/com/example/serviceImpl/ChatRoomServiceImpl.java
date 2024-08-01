@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -41,10 +39,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
      */
     @Override
     @Transactional
-    public UUID getChatRoom(Users users, MissingPerson missingPerson) {
-        // entity가 아닌 Long으로 조회하는 경우
-//        Optional<ChatRoom> chatRoomOptional1 = chatRoomRepository.findByChatRoomIdUserIdAndChatRoomIdMpId(users.getUserId(), missingPerson.getMpId());
-        // entity로 조회하는 경우
+    public Map<String, Object> getChatRoom(Users users, MissingPerson missingPerson) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("userId", users.getUserId());
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findByUsersAndMissingPerson(users, missingPerson);
 
 //        System.out.println(chatRoomOptional1.toString());
@@ -62,10 +59,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
             entityManager.persist(newChatRoom);
 
-            return roomId;
+            resultMap.put("roomId", roomId);
         } else {
-            return chatRoomOptional.get().getChatRoomId().getRoomId();
+            resultMap.put("roomId", chatRoomOptional.get().getChatRoomId().getRoomId());
         }
+
+        return resultMap;
     }
 
     @Override
