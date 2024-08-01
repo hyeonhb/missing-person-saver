@@ -3,14 +3,29 @@ import mediapipe as mp
 import numpy as np
 from matplotlib import pyplot as plt
 from io import BytesIO
+import sys
+import requests
 
-def classify_features(image_bytes):
+def classify_features():
+    if len(sys.argv) > 1:
+        roomId = sys.argv[1]
+    else :
+        return "이미지를 읽을 수 없습니다"
+
     # MediaPipe FaceMesh 초기화
     mp_face_mesh = mp.solutions.face_mesh
     face_mesh = mp_face_mesh.FaceMesh()
 
     # 바이트 데이터를 OpenCV 이미지로 변환
-    image_stream = BytesIO(image_bytes)
+    # image_stream = BytesIO(image_bytes)
+    response = requests.get(f'http://localhost:8080/missing-persons/get-img?roomId={roomId}')
+
+    # 얼굴 탐지기 로드 (Haar Cascades)
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+    # 이미지 읽기
+    # 바이트 데이터를 OpenCV 이미지로 변환
+    image_stream = BytesIO(response.content)
     image = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -275,20 +290,22 @@ def classify_features(image_bytes):
     # print(f"볼: {cheek_features}")
     # print(f"기타 특징: {additional_features}")
 
-    # 랜드마크 표시된 이미지 저장 및 출력
-    for idx, landmark in enumerate(landmarks):
-        x = int(landmark.x * image.shape[1])
-        y = int(landmark.y * image.shape[0])
-        cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
-        cv2.putText(image, str(idx), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1)
+    # # 랜드마크 표시된 이미지 저장 및 출력
+    # for idx, landmark in enumerate(landmarks):
+    #     x = int(landmark.x * image.shape[1])
+    #     y = int(landmark.y * image.shape[0])
+    #     cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
+    #     cv2.putText(image, str(idx), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1)
 
-    output_image_path = 'output_face.png'
-    cv2.imwrite(output_image_path, image)
-    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    plt.show()
+    # output_image_path = 'output_face.png'
+    # cv2.imwrite(output_image_path, image)
+    # plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    # plt.show()
 
-# 예제 바이트 데이터 사용
-with open('python-model/sample/flower.webp', 'rb') as f:
-    image_bytes = f.read()
+# # 예제 바이트 데이터 사용
+# with open('python-model/sample/flower.webp', 'rb') as f:
+#     image_bytes = f.read()
 
-classify_features(image_bytes)
+if __name__ == "__main__":
+    classify_features()
+

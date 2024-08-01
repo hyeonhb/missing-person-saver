@@ -53,12 +53,7 @@ public class MissingPersonController {
 
 
     @GetMapping("/face-analyze")
-    public String photoAnalyzeByMissingPerson(@RequestParam UUID roomId) throws Exception {
-        ResponseEntity<byte[]> responsePhoto = missingPersonService.getMissingPersonImg(setParamMap(roomId));
-        
-        byte[] photoBytes = responsePhoto.getBody();
-        System.out.println(photoBytes.toString());
-
+    public String photoAnalyzeByMissingPerson(@RequestParam UUID roomId) {
         try {
             String os = System.getProperty("os.name").toLowerCase();
             String pythonCommand;
@@ -69,11 +64,10 @@ public class MissingPersonController {
             }
 
             List<String> command = new ArrayList<>();
-            String image_bytes = photoBytes.toString();
-
+            
             command.add(pythonCommand);
-            command.add("/home/yeoeun278/missing-person-saver/python-model/face_detection.py");
-            command.add(image_bytes);
+            command.add("/missing-person-saver/python-model/face_detection.py");
+            command.add(roomId.toString());
 
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
