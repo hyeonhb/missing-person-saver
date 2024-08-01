@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import './OptionModal.css';
+import env from '../../env';
 
 const ReportGPS = () => {
   const [marker, setMarker] = useState(null);
@@ -9,7 +10,7 @@ const ReportGPS = () => {
   useEffect(() => {
     // Kakao 지도 API 스크립트를 동적으로 로드합니다.
     const script = document.createElement('script');
-    const MAP_API_KEY = ''; // KAKAO MAP API KEY
+    const MAP_API_KEY = env.KAKAO_MAP_API_KEY;
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${MAP_API_KEY}&autoload=false`;
     script.onload = () => {
       window.kakao.maps.load(() => {

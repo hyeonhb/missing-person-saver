@@ -59,13 +59,14 @@
   max-height: 48px;
   color: #616161;
   background-color: white;
-  border: 1px solid #ccc;
+  border: 1px solid #676767;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .report-option:hover {
-  background-color: #0067a5;
+  background-color: #00366c
+  ;
   color: white;
 }
 
