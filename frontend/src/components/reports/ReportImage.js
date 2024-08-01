@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import './OptionModal.css';
 
-const ReportImage = ({ onClose, onSubmit }) => {
+const ReportImage = ({ onSubmit }) => {
   const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
@@ -13,18 +13,15 @@ const ReportImage = ({ onClose, onSubmit }) => {
   const handleSubmit = () => {
     if (image) {
       onSubmit(image);
-      onClose();
     }
   };
 
   return (
     <div className="option-modal">
       <div className="option-modal-content">
-        <h2>사진 제보</h2>
         <input type="file" accept="image/*" onChange={handleChange} />
         <div className="button-container">
             <button onClick={handleSubmit}>제보</button>
-            <button onClick={onClose}>닫기</button>
         </div>
       </div>
     </div>

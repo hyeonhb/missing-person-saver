@@ -32,8 +32,9 @@ const Chat = () => {
     else initRoom(); // 있으면 바로 채팅 시작
   } , []);
 
-  // 실종자 정보 셋업
+  
   useEffect(() => {
+    // 실종자 정보 셋업
     const hasMisperInfo = !isEmptyObject(misperInfo);
     if (hasMisperInfo) {
       let text = '아래 실종자의 제보 및 QnA 창입니다.\n\n';
@@ -42,8 +43,15 @@ const Chat = () => {
         text += `${key}: ${misperInfo[key]}\n`;
       }
 
-      
-      setMessages([{text, isUser: false}, ...messages]);
+      // roomId가 있으면 기존 채팅 내역을 불러와서 셋업
+      const roomId = storage.get.roomId();
+      if (!roomId) return;
+
+      messageApi.getMessageHistory({roomId}).then(response => {
+        const histories = response.messages.map(msg => formatResponseMsg(msg));
+
+        setMessages([{text, isUser: false}, ...messages, ...histories]);
+      });
     }
   }, [misperInfo]);
 
@@ -67,15 +75,6 @@ const Chat = () => {
     const key = storage.get.misperKey();
     const info = await misperApi.getMisperInfo({uid: key});
     setMisperInfo(info);
-
-    // roomId가 있으면 기존 채팅 내역을 불러와서 셋업해주자.
-    const roomId = storage.get.roomId();
-    if (!roomId) return;
-
-    const response = await messageApi.getMessageHistory({roomId});
-    const histories = response.messages.map(msg => formatResponseMsg(msg));
-
-    setMessages([...histories]);
   };
 
   const handleInputChange = (e) => {
@@ -137,23 +136,25 @@ const Chat = () => {
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />
       </section>
-      <div className="chat-input-container">
-        <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
-        <input
-          ref={inputRef}
-          type="text"
-          className="chat-input"
-          placeholder="질문을 입력해 주세요."
-          value={newMessage}
-          onChange={handleInputChange}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') updateNewMsg();
-          }}
-        />
-        <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
-          전송
-        </button>
-      </div>
+      {!showProfileModal &&
+        <div className="chat-input-container">
+          <button className="report-button" onClick={() => setShowOptionsModal(true)}>제보</button>
+          <input
+            ref={inputRef}
+            type="text"
+            className="chat-input"
+            placeholder="질문을 입력해 주세요."
+            value={newMessage}
+            onChange={handleInputChange}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') updateNewMsg();
+            }}
+          />
+          <button className="send-button" disabled={!hasNewMessage()} onClick={updateNewMsg}>
+            전송
+          </button>
+        </div>
+      }
       {showOptionsModal && <ReportOptions onClose={() => setShowOptionsModal(false)} />}
     </div>
   );

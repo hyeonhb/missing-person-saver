@@ -16,15 +16,10 @@ public class PhotoReportId implements Serializable {
 
     private ChatRoomId chatRoomId;
 
-    public UUID getPhotoId() { return photoId; }
-
     public PhotoReportId() {}
 
     @Builder
-    public PhotoReportId(
-            UUID photoId,
-            ChatRoomId chatRoomId
-    ) {
+    public PhotoReportId(UUID photoId, ChatRoomId chatRoomId) {
         this.photoId = photoId;
         this.chatRoomId = chatRoomId;
     }
