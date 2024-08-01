@@ -32,6 +32,13 @@ const ReportOptions = ({ onClose }) => {
     setSelectedOption('default');
   };
 
+  function reportLocation(location) {
+    console.log(location);
+    
+    onClose();
+    window.alert('제보가 완료되었습니다.')
+  }
+
   return (
     <div className="report-options-modal">
       <div className="report-options-content">
@@ -51,7 +58,7 @@ const ReportOptions = ({ onClose }) => {
 
         {selectedOption === 'message' && <ReportMessage onSubmit={(message) => alert(`제보 메시지: ${message}`)} />}
         {selectedOption === 'call' && <ReportCall />}
-        {selectedOption === 'gps' && <ReportGPS />}
+        {selectedOption === 'gps' && <ReportGPS onSubmit={reportLocation} />}
         {selectedOption === 'image' && <ReportImage onSubmit={(image) => alert(`제보 이미지: ${image.name}`)} />}
       </div>
     </div>
