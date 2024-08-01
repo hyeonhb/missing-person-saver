@@ -6,6 +6,7 @@ import com.example.entity.MissingPerson;
 import com.example.entity.Users;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface ChatRoomService {
@@ -17,7 +18,7 @@ public interface ChatRoomService {
      * @param missingPerson
      * @return 채팅방 UUID
      */
-    UUID getChatRoom(Users users, MissingPerson missingPerson);
+    Map<String, Object> getChatRoom(Users users, MissingPerson missingPerson);
 
     ChatRoom getChatRoomEntity(UUID roomId);
 }

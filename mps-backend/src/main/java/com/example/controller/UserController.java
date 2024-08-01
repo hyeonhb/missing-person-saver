@@ -36,7 +36,7 @@ public class UserController {
     public Users getUser(@RequestBody Map userMap) { return userService.getUser(userMap); }
 
     @PostMapping("/login")
-    public UUID getUser(@RequestParam Long mpId, @RequestBody Map userMap) {
+    public Map<String, Object> getUser(@RequestParam Long mpId, @RequestBody Map userMap) {
         Users user = userService.getUser(userMap);
         MissingPerson missingPerson = missingPersonService.getMissingPerson(mpId);
 

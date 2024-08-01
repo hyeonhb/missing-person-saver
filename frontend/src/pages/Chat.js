@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import BubbleList from '../components/BubbleList'; 
 import Modal from '../components/Modal';
 import ReportOptions from '../components/ReportOptions'
+import QuestionTypeModal from '../components/QuestionTypeModal';
 // Utils
 import storage from '../utils/storage';
 import { isEmptyObject, isEmptyString } from '../utils/validator';
@@ -16,6 +17,7 @@ import messageApi from '../api/messageApi';
 
 const Chat = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showQuestionModal, setShowQuestionModal] = useState(true);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const hasNewMessage = () => !isEmptyString(newMessage);
@@ -47,8 +49,8 @@ const Chat = () => {
       const roomId = storage.get.roomId();
       if (!roomId) return;
 
-      messageApi.getMessageHistory({roomId}).then(response => {
-        const histories = response.messages.map(msg => formatResponseMsg(msg));
+      messageApi.getMessageHistory().then(response => {
+        const histories = response.map(msg => formatResponseMsg(msg));
 
         setMessages([{text, isUser: false}, ...messages, ...histories]);
       });
@@ -73,7 +75,8 @@ const Chat = () => {
   const initRoom = async () => {
     // 실종자 정보 셋업
     const key = storage.get.misperKey();
-    const info = await misperApi.getMisperInfo({uid: key});
+    const info = await misperApi.getMisperInfos();
+
     setMisperInfo(info);
   };
 
@@ -96,9 +99,10 @@ const Chat = () => {
     // 신규 질문에 대한 답변 가져와서 이것도 새로운 Bubble로 생성 (bot-bubble)
     const param = {
       question: updatedMsg.text,
-      roomId: storage.get.roomId(),
+      type: 1,
+      detailType: storage.get.questionType(),
     };
-    messageApi.getAnswer(param).then(response => {
+    messageApi.saveMessages(param).then(response => {
       const formattedAnswer = formatResponseMsg(response);
       setAnswer(formattedAnswer);
     });
@@ -109,15 +113,20 @@ const Chat = () => {
 
   const handleModalSubmit = async informerInfo => {
     // Modal 컴포넌트에서 넘어온 제보자 정보를 API에 넘겨서 새로 생성된 userId와 roomId를 얻어오자
-    const {userId, roomId} = await userApi.saveUserProfile(informerInfo);
+    const {userId, roomId} = await userApi.getChatRoom(storage.get.misperKey(),informerInfo);
 
     // 위 API 얻어돈 ID 값들을 storage에 저장
     storage.set.userId(userId);
     storage.set.roomId(roomId);
 
     // 채팅 시작
-    initRoom();
+    await initRoom();
   };
+
+  const handleQuestionModalSubmit = (questionType) => {
+    storage.set.questionType(questionType);
+    setShowQuestionModal(false);
+  }
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -132,6 +141,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       {showProfileModal && <Modal onClose={() => setShowProfileModal(false)} onSubmit={handleModalSubmit} />}
+      {showQuestionModal && <QuestionTypeModal onClose={() => setShowQuestionModal(false)} onSubmit={handleQuestionModalSubmit} />}
       <section className="chat-messages">
         <BubbleList messages={messages} />
         <div ref={messagesEndRef} />

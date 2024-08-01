@@ -30,7 +30,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Transactional
     public List<ChatMessageDTO> getMessageHistory(ChatRoom chatRoom) {
 
-        List<ChatMessage> chatMessageOptional = chatMessageRepository.findByChatRoom(chatRoom);
+        List<ChatMessage> chatMessageOptional = chatMessageRepository.findByChatRoomOrderByInsDt(chatRoom);
 
         System.out.println(chatMessageOptional.stream().toList());
 

@@ -44,6 +44,12 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  background-color: gray !important;
+  color: white !important;
+  cursor: default !important;
+}
+
 input {
   padding-left: 10px;
   padding-right: 10px;
@@ -56,11 +62,6 @@ input:focus-visible {
 
 input::placeholder {
   color:lightgray
-}
-
-button:disabled {
-  background-color: gray;
-  color: white;
 }
 
 code {

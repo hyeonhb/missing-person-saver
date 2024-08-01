@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.PhotoReportDTO;
 import com.example.entity.ChatRoom;
 import com.example.entity.MissingPerson;
 import com.example.service.ChatRoomService;
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/missing-persons")
@@ -43,6 +49,41 @@ public class MissingPersonController {
         paramMap.put("msspsnIdntfccd", missingPerson.getMpId());
         paramMap.put("nm", missingPerson.getName());
         return paramMap;
+    }
+
+
+    @GetMapping("/face-analyze")
+    public String photoAnalyzeByMissingPerson(@RequestParam UUID roomId) {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            String pythonCommand;
+            if (os.contains("win")) {
+                pythonCommand = "C:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe"; // Windows에서의 절대 경로
+            } else {
+                pythonCommand = "/usr/bin/python"; // Unix 계열 OS에서의 절대 경로
+            }
+
+            List<String> command = new ArrayList<>();
+
+            command.add(pythonCommand);
+            command.add("/C:/workspace/missing-person-saver/python-model/face_feature_classifier.py");
+            command.add(roomId.toString());
+
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                output.append(line);
+            }
+            reader.close();
+            return output.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error running Python script";
+        }
     }
 
 }

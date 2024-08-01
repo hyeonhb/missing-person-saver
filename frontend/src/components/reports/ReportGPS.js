@@ -4,8 +4,9 @@ import {useEffect, useState} from 'react';
 import './OptionModal.css';
 import env from '../../env';
 
-const ReportGPS = () => {
+const ReportGPS = ({onSubmit}) => {
   const [marker, setMarker] = useState(null);
+  const [location, setLocation] = useState({lat: '', lng: ''});
 
   useEffect(() => {
     // Kakao 지도 API 스크립트를 동적으로 로드합니다.
@@ -17,7 +18,7 @@ const ReportGPS = () => {
         // 지도를 생성합니다.
         const container = document.getElementById('map-container');
         const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          center: new window.kakao.maps.LatLng(37.56718386576108, 127.00987309483482),
           level: 3
         };
         const map = new window.kakao.maps.Map(container, options);
@@ -47,6 +48,8 @@ const ReportGPS = () => {
             removable: true
           });
           infowindow.open(map, newMarker);
+
+          setLocation({lat, lng});
         });
       });
     };
@@ -58,10 +61,19 @@ const ReportGPS = () => {
     };
   }, []); // marker 상태를 의존성 배열에 추가하여 업데이트를 반영합니다.
 
+  function bindLocation() {
+    if (location.lat === '' || location.lng === '') {
+      window.alert('지도에서 위치를 선택해주세요.');
+      return;
+    }
+    onSubmit(location)
+  }
+
   return (
     <div className="option-modal">
       <div className="option-modal-content">
         <div id="map-container" />
+        <button onClick={bindLocation}>제보</button>
       </div>
     </div>
   );

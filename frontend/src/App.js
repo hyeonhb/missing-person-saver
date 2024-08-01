@@ -25,7 +25,8 @@ function App() {
 
   function setMisperKey() {
     const urlParams = new URLSearchParams(window.location.search);
-    const key = urlParams.get('misper') || 'TEST_KEY';
+    const key = urlParams.get('misper') || '5768021';
+
     storage.set.misperKey(key);
   }
 

@@ -1,27 +1,42 @@
 import { isEmptyObject } from "../utils/validator";
+import axiosInstance from "./axiosConfig";
 
 const apiController = {
     get: async (url, query = {}) => {
-        const queryString = getQueryString(query)
+        const queryString = getQueryString(query);
 
-        return await fetchApi(url + queryString);
+        return await axiosApi(url, queryString, null, 'get');
     },
-    post: async (url, param = {}, option = {}) => {
-        return await fetchApi(url, {
-            body: param,
-            ...option,
-            method: 'POST',
-        });
+    post: async (url, param = {}, body = {}) => {
+        const queryString = getQueryString(param);
+
+        return await axiosApi(url, queryString, body, 'post');
     },
 }
 
-async function fetchApi(url, option) {
+// async function fetchApi(url, option) {
+//     try {
+//         const response = await fetch(url, option);
+//         return await response.json();
+//     } catch(err) {
+//         console.error(`${url}에서 에러 발생`, err);
+//         return err;
+//     }
+// }
+
+async function axiosApi(url, param, body, restApi) {
     try {
-        const response = await fetch(url, option);
-        return await response.json();
-    } catch(err) {
-        console.error(`${url}에서 에러 발생`, err);
-        return err;
+        let response;
+        if (restApi === 'get') {
+            response = await axiosInstance.get(url + param);
+        } else if (restApi === 'post') {
+            response = await axiosInstance.post(url + param, body);
+        }
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(`${url}에서 에러 발생`, error);
+        return error;
     }
 }
 

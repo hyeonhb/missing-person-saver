@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, ChatMessageId> {
 
-    List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
+    List<ChatMessage> findByChatRoomOrderByInsDt(ChatRoom chatRoom);
 }
