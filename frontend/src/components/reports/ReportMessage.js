@@ -17,7 +17,7 @@ const ReportMessage = ({ onSubmit }) => {
       <div className="option-modal-content">
         <textarea value={message} onChange={handleChange} />
         <div className="button-container">
-          <button onClick={handleSubmit}>제보</button>
+          <button disabled={message === ''} onClick={handleSubmit}>제보</button>
           </div>
       </div>
     </div>

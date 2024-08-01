@@ -21,7 +21,7 @@ const ReportImage = ({ onSubmit }) => {
       <div className="option-modal-content">
         <input type="file" accept="image/*" onChange={handleChange} />
         <div className="button-container">
-            <button onClick={handleSubmit}>제보</button>
+            <button disabled={image === null} onClick={handleSubmit}>제보</button>
         </div>
       </div>
     </div>

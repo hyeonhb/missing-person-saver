@@ -35,6 +35,10 @@ const ReportOptions = ({ onClose }) => {
   function reportLocation(location) {
     console.log(location);
     
+    completeReport()
+  }
+
+  function completeReport() {
     onClose();
     window.alert('제보가 완료되었습니다.')
   }
@@ -56,10 +60,10 @@ const ReportOptions = ({ onClose }) => {
           </div>
         }
 
-        {selectedOption === 'message' && <ReportMessage onSubmit={(message) => alert(`제보 메시지: ${message}`)} />}
+        {selectedOption === 'message' && <ReportMessage onSubmit={(message) => completeReport()} />}
         {selectedOption === 'call' && <ReportCall />}
         {selectedOption === 'gps' && <ReportGPS onSubmit={reportLocation} />}
-        {selectedOption === 'image' && <ReportImage onSubmit={(image) => alert(`제보 이미지: ${image.name}`)} />}
+        {selectedOption === 'image' && <ReportImage onSubmit={(image) => completeReport()} />}
       </div>
     </div>
   );
